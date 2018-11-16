@@ -1,0 +1,22 @@
+version: '3'
+
+volumes:
+  ddsl_bundle:
+
+services:
+  dind:
+    image: docker:dind
+    privileged: true
+  ddsl:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.dev
+    environment:
+      BUNDLE_PATH: /bundle
+      DOCKER_HOST: tcp://dind:2375
+    volumes:
+      - ../:/var/www/app:cached
+      - ddsl_bundle:/bundle:cached
+      - ~/.bash_history:/root/.bash_history
+    depends_on:
+      - dind

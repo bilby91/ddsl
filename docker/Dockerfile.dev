@@ -1,0 +1,33 @@
+FROM docker:18.05
+
+LABEL maintainer="Martín Fernández <mfernandez@geoforce.com>"
+
+ENV APP_HOME /var/www/app
+
+# Install the base tooling
+RUN apk add --no-cache \
+      python \
+      py-pip \
+      python-dev \
+      gettext \
+      curl \
+      bash \
+      git \
+      ruby \
+      ruby-dev \
+      build-base \
+      gcc
+
+# Install untrusted packages (separate line for scoping)
+RUN apk add --no-cache \
+    --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
+    --allow-untrusted \
+    aws-cli
+
+# Install docker-compose
+RUN pip install docker-compose
+
+# Install ruby dependencies
+RUN gem install builder bundler --no-ri
+
+WORKDIR ${APP_HOME}

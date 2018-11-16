@@ -1,0 +1,15 @@
+#!/bin/bash
+
+export COMPOSE_FILE=docker/docker-compose.yml
+
+case "$1" in
+  bash)
+    docker-compose run --rm ddsl /bin/bash
+    ;;
+  build)
+    docker-compose build
+    ;;
+  down)
+    docker-compose down
+    ;;
+esac
