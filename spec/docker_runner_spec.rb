@@ -12,14 +12,14 @@ describe DDSL::DockerRunner do
   after { io.close }
 
   let(:dockerfile) do
-    tmp_file('Dockerfile', <<~EOF
+    tmp_file('Dockerfile', <<~DOCKER
       FROM alpine
       ARG FOO
       ARG BAR
       RUN echo ${FOO}
       RUN echo ${BAR}
-       CMD echo "Worked!"
-    EOF
+      CMD echo "Worked!"
+    DOCKER
   )
   end
 

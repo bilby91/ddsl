@@ -24,7 +24,7 @@ module DDSL
                         YAML.load_file(file_path)
                       else
                         raise UnsupportedFileFormatError, "format #{format} is unsupported"
-      end
+                      end
 
       DDSL::SchemaValidator.new.validate!(parsed_config)
     end

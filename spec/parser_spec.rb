@@ -18,11 +18,11 @@ describe DDSL::Parser do
 
     context 'when file is json' do
       let(:file) do
-        tmp_file('test.json', <<~EOF
+        tmp_file('test.json', <<~JSON
           {
             "version": 1
           }
-        EOF
+        JSON
       )
       end
 
@@ -33,9 +33,9 @@ describe DDSL::Parser do
 
     context 'when file is yml' do
       let(:file) do
-        tmp_file('test.yml', <<~EOF
+        tmp_file('test.yml', <<~YML
           version: 1
-        EOF
+        YML
       )
       end
 

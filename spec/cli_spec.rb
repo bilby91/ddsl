@@ -8,7 +8,7 @@ describe DDSL::CLI do
   subject { DDSL::CLI.new('.') }
 
   let(:config_file) do
-    tmp_file('test.yml', <<~EOF
+    tmp_file('test.yml', <<~YML
       version: 1
       builds:
         - name: main
@@ -18,11 +18,16 @@ describe DDSL::CLI do
             FOO: bar
 
       runs:
-        - name: test
+        - name: test-docker
           type: docker
           image: test/test:latest
           cmd: /echo.sh
-    EOF
+
+        - name: test-docker-compose
+          type: docker-compose
+          service: test
+          cmd: /echo.sh
+    YML
   )
   end
 
@@ -89,19 +94,38 @@ describe DDSL::CLI do
     end
 
     context 'when valid NAME is given' do
-      it 'calls DockerRunner#run with the correct arguments' do
-        expect_any_instance_of(DDSL::DockerRunner).to receive(:run).with(
-          [
-            {
-              'name' => 'test',
-              'type' => 'docker',
-              'image' => 'test/test:latest',
-              'cmd' => '/echo.sh'
-            }
-          ]
-        )
+      context 'when type of run spec is docker' do
+        it 'calls DockerRunner#run with the correct arguments' do
+          expect_any_instance_of(DDSL::DockerRunner).to receive(:run).with(
+            [
+              {
+                'name' => 'test-docker',
+                'type' => 'docker',
+                'image' => 'test/test:latest',
+                'cmd' => '/echo.sh'
+              }
+            ]
+          )
 
-        subject.run(%W[--config #{config_file.path} run test])
+          subject.run(%W[--config #{config_file.path} run test-docker])
+        end
+      end
+
+      context 'when type of run spec is docker-compose' do
+        it 'calls DockerComposeRunner#run with the correct arguments' do
+          expect_any_instance_of(DDSL::DockerComposeRunner).to receive(:run).with(
+            [
+              {
+                'name' => 'test-docker-compose',
+                'type' => 'docker-compose',
+                'service' => 'test',
+                'cmd' => '/echo.sh'
+              }
+            ]
+          )
+
+          subject.run(%W[--config #{config_file.path} run test-docker-compose])
+        end
       end
     end
   end

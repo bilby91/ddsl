@@ -31,6 +31,12 @@ module DDSL
       }
     }.freeze
 
+    WHITELIST = {
+      'run' => %w[
+        Image Cmd User Workdir Env Volumes
+      ]
+    }.freeze
+
     attr_reader :io
 
     def initialize(io = $stdout)
@@ -39,16 +45,21 @@ module DDSL
 
     def build(builds)
       builds.map do |b|
-        build_image_with_logs(b) do |log|
+        mapped_options = mapped_build_options(b)
+
+        p b, mapped_options
+        build_image_with_logs(mapped_options) do |log|
           io.puts log
         end
       end
     end
 
     def run(runs)
-      statuses = runs.map do |r|
+      runs.map do |r|
         begin
-          run_container_with_logs(r) do |log|
+          mapped_options = mapped_run_options(r)
+
+          run_container_with_logs(mapped_options) do |log|
             io.puts log
           end
         rescue Docker::Error::ClientError => e
@@ -70,7 +81,7 @@ module DDSL
     # @return [Hash]
     #
     private def build_image_with_logs(build_options)
-      Docker::Image.build_from_dir(build_options['context'], mapped_build_options(build_options)) do |v|
+      Docker::Image.build_from_dir(build_options['context'], build_options) do |v|
         if (log = JSON.parse(v)) && log.key?('stream')
           yield log['stream']
         end
@@ -86,7 +97,7 @@ module DDSL
     # @return [Hash]
     #
     private def run_container_with_logs(run_options)
-      container = Docker::Container.create(mapped_run_options(run_options))
+      container = Docker::Container.create(run_options)
 
       container.streaming_logs(stderr: true, stdout: true, logs: true, follow: true) do |_stream, chunk|
         yield chunk
@@ -99,7 +110,7 @@ module DDSL
     #
     # Map build options for `Docker` module
     #
-    # @param [Hash] run_options
+    # @param [Hash] build_options
     #
     # @return [Hash]
     #
@@ -118,9 +129,12 @@ module DDSL
     # @return [Hash]
     #
     private def mapped_run_options(run_options)
-      transform_options(
-        translate_options(run_options, TRANSLATIONS['run']),
-        TRANSFORMATIONS['run']
+      whitelist_options(
+        transform_options(
+          translate_options(run_options, TRANSLATIONS['run']),
+          TRANSFORMATIONS['run']
+        ),
+        WHITELIST['run']
       )
     end
   end

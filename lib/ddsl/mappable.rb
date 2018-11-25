@@ -29,9 +29,26 @@ module DDSL
     # @return [Hash] new hash with translation specs applied
     #
     def translate_options(translateable, specs)
-      specs.inject({}) do |translated_options, (source, target)|
-        translated_options.merge(target => translateable[source])
+      specs.inject(translateable) do |options, (source, target)|
+        if options[source].nil?
+          options
+        else
+          value = options.delete(source)
+          options.merge(target => value)
+        end
       end
+    end
+
+    #
+    # Remove any unknown keys using the given whitelist spec
+    #
+    # @param [Hash] whitelistable
+    # @param [Array] specs
+    #
+    # @return [Hash] new hash with unknown keys removed
+    #
+    def whitelist_options(whitelistable, specs)
+      whitelistable.keep_if { |k, _v| specs.include? k }
     end
   end
 end

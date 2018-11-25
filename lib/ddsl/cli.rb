@@ -5,6 +5,7 @@ require 'clamp'
 
 require_relative './parser'
 require_relative './docker_runner'
+require_relative './docker_compose_runner'
 
 module DDSL
   class CLI < Clamp::Command
@@ -22,12 +23,33 @@ module DDSL
       parameter 'NAME ...', 'name of the run', required: true, attribute_name: :names
 
       def execute
-        docker_runner.run(search_targets!('runs'))
+        with_runner(search_targets!('runs')) do |runner, options|
+          runner.run(options)
+        end
+      end
+    end
+
+    def with_runner(runs)
+      runs.each do |r|
+        yield(runner_for_type(r['type']), [r])
+      end
+    end
+
+    def runner_for_type(type)
+      case type
+      when 'docker'
+        docker_runner
+      when 'docker-compose'
+        docker_compose_runner
       end
     end
 
     def docker_runner
       @docker_runner ||= DockerRunner.new
+    end
+
+    def docker_compose_runner
+      @docker_compose_runner ||= DockerComposeRunner.new
     end
 
     def search_targets!(type)

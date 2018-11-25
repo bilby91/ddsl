@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ModuleLength
 module DDSL
-  SchemaVersion = :draft4
-  Schema = {
+  SCHEMA_VERSION = :draft4
+  SCHEMA = {
     type: :object,
     required: [:version],
     additionalProperties: false,
@@ -71,6 +72,7 @@ module DDSL
           cmd: { type: :string },
           user: { type: :string },
           workdir: { type: :string },
+          rm: { type: :boolean },
           env: {
             type: :object,
             additionalProperties: {
@@ -97,6 +99,7 @@ module DDSL
           cmd: { type: :string },
           user: { type: :string },
           workdir: { type: :string },
+          rm: { type: :boolean },
           env: {
             type: :object,
             additionalProperties: {
@@ -109,9 +112,13 @@ module DDSL
               type: :string
             }
           },
-          service_ports: { type: :string }
+          service_ports: { type: :string },
+          tty: { type: :boolean },
+          detached: { type: :boolean },
+          no_deps: { type: :boolean }
         }
       }
     }
   }.freeze
 end
+# rubocop:enable Metrics/ModuleLength

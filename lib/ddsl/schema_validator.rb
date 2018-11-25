@@ -16,9 +16,9 @@ module DDSL
     # @return [Hash] same data that was given
     #
     def validate!(data)
-      errors = JSON::Validator.fully_validate(DDSL::Schema, data, version: DDSL::SchemaVersion)
+      errors = JSON::Validator.fully_validate(DDSL::SCHEMA, data, version: DDSL::SCHEMA_VERSION)
 
-      raise InvalidError, errors.join('\n') if errors.count > 0
+      raise InvalidError, errors.join('\n') if errors.count.positive?
 
       data
     end
