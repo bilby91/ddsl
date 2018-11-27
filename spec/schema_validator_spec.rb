@@ -53,6 +53,7 @@ describe DDSL::SchemaValidator do
           let(:build) do
             {
               name: 'test',
+              type: 'docker',
               context: '.',
               file: 'Dockerfile'
             }

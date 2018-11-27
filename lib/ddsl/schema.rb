@@ -25,8 +25,9 @@ module DDSL
       build: {
         type: :object,
         required: [:name],
-        allOf: [
-          { "$ref": '#/definitions/build_options' }
+        oneOf: [
+          { "$ref": '#/definitions/build_docker_options' },
+          { "$ref": '#/definitions/build_docker_compose_options' }
         ],
         properties: {
           name: {
@@ -41,10 +42,14 @@ module DDSL
           { "$ref": '#/definitions/run_docker_compose_options' }
         ]
       },
-      build_options: {
+      build_docker_options: {
         type: :object,
-        required: %i[context file],
+        required: %i[type context file],
         properties: {
+          type: {
+            type: :string,
+            enum: [:docker]
+          },
           context: { type: :string },
           file: { type: :string },
           build_args: {
@@ -66,6 +71,30 @@ module DDSL
             items: { type: :string }
           },
           push: { type: :boolean }
+        }
+      },
+      build_docker_compose_options: {
+        type: :object,
+        required: %i[type],
+        properties: {
+          type: {
+            type: :string,
+            enum: [:'docker-compose']
+          },
+          file: { type: :string },
+          service: { type: :string },
+          no_cache: { type: :boolean },
+          pull: { type: :boolean },
+          force_rm: { type: :boolean },
+          compress: { type: :boolean },
+          parallel: { type: :boolean },
+          memory: { type: :string },
+          build_args: {
+            type: :object,
+            additionalProperties: {
+              type: :string
+            }
+          }
         }
       },
       run_docker_options: {

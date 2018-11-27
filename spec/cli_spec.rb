@@ -12,8 +12,14 @@ describe DDSL::CLI do
       version: 1
       builds:
         - name: main
+          type: docker
           context: .
           file: Dockerfile
+          build_args:
+            FOO: bar
+        - name: dev
+          type: docker-compose
+          file: docker-compose.yml
           build_args:
             FOO: bar
 
@@ -57,17 +63,35 @@ describe DDSL::CLI do
     end
 
     context 'when valid NAME is given' do
-      it 'calls DDSL::Command::Docker::Build#build with the correct arguments' do
-        expect_any_instance_of(DDSL::Command::Docker::Build).to receive(:run).with(
-          'name' => 'main',
-          'context' => '.',
-          'file' => 'Dockerfile',
-          'build_args' => {
-            'FOO' => 'bar'
-          }
-        )
+      context 'when type of run spec is docker' do
+        it 'calls DDSL::Command::Docker::Build#build with the correct arguments' do
+          expect_any_instance_of(DDSL::Command::Docker::Build).to receive(:run).with(
+            'name' => 'main',
+            'type' => 'docker',
+            'context' => '.',
+            'file' => 'Dockerfile',
+            'build_args' => {
+              'FOO' => 'bar'
+            }
+          )
 
-        subject.run(%W[--config #{config_file.path} build main])
+          subject.run(%W[--config #{config_file.path} build main])
+        end
+      end
+
+      context 'when type of run spec is docker-compose' do
+        it 'calls DDSL::Command::DockerCompose::Build#build with the correct arguments' do
+          expect_any_instance_of(DDSL::Command::DockerCompose::Build).to receive(:run).with(
+            'name' => 'dev',
+            'type' => 'docker-compose',
+            'file' => 'docker-compose.yml',
+            'build_args' => {
+              'FOO' => 'bar'
+            }
+          )
+
+          subject.run(%W[--config #{config_file.path} build dev])
+        end
       end
     end
   end

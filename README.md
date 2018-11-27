@@ -9,10 +9,14 @@ version: 1
 
 builds:
   - name: main
+    type: docker
     context: .
     file: docker/Dockerfile
     tags:
       - bilby91/ddsl:latest
+  - name: dev
+    type: docker-compose
+    file: docker/docker-compose.yml
 
 runs:
   - name: bash

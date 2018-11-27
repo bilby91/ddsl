@@ -14,9 +14,9 @@ module DDSL
       parameter 'NAME ...', 'name of the build', required: true, attribute_name: :names
 
       def execute
-        search_targets!('builds').each do |b|
+        with_builder(search_targets!('builds')) do |runner, spec|
           begin
-            builder.run(b)
+            runner.run(spec)
           rescue DDSL::Shell::ExitStatusError
             $stdout.puts 'Build failed.'
           end
@@ -28,13 +28,19 @@ module DDSL
       parameter 'NAME ...', 'name of the run', required: true, attribute_name: :names
 
       def execute
-        with_runner(search_targets!('runs')) do |runner, options|
+        with_runner(search_targets!('runs')) do |runner, spec|
           begin
-            runner.run(options)
+            runner.run(spec)
           rescue DDSL::Shell::ExitStatusError
             $stdout.puts 'Run failed.'
           end
         end
+      end
+    end
+
+    private def with_builder(builds)
+      builds.each do |b|
+        yield(builder_for_type(b['type']), b)
       end
     end
 
@@ -50,6 +56,15 @@ module DDSL
         Command::Docker::Run.new
       when 'docker-compose'
         Command::DockerCompose::Run.new
+      end
+    end
+
+    private def builder_for_type(type)
+      case type
+      when 'docker'
+        Command::Docker::Build.new
+      when 'docker-compose'
+        Command::DockerCompose::Build.new
       end
     end
 
