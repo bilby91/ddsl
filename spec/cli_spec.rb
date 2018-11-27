@@ -64,33 +64,55 @@ describe DDSL::CLI do
 
     context 'when valid NAME is given' do
       context 'when type of run spec is docker' do
-        it 'calls DDSL::Command::Docker::Build#build with the correct arguments' do
-          expect_any_instance_of(DDSL::Command::Docker::Build).to receive(:run).with(
-            'name' => 'main',
-            'type' => 'docker',
-            'context' => '.',
-            'file' => 'Dockerfile',
-            'build_args' => {
-              'FOO' => 'bar'
-            }
-          )
+        context 'when command is successful' do
+          it 'calls DDSL::Command::Docker::Build#build with the correct arguments' do
+            expect_any_instance_of(DDSL::Command::Docker::Build).to receive(:run).with(
+              'name' => 'main',
+              'type' => 'docker',
+              'context' => '.',
+              'file' => 'Dockerfile',
+              'build_args' => {
+                'FOO' => 'bar'
+              }
+            )
 
-          subject.run(%W[--config #{config_file.path} build main])
+            subject.run(%W[--config #{config_file.path} build main])
+          end
+        end
+
+        context 'when command is raises DDSL::Shell::ExitStatusError' do
+          it 'handles the error' do
+            expect_any_instance_of(DDSL::Command::Docker::Build).to receive(:run)
+              .and_raise(DDSL::Shell::ExitStatusError)
+
+            subject.run(%W[--config #{config_file.path} build main])
+          end
         end
       end
 
       context 'when type of run spec is docker-compose' do
-        it 'calls DDSL::Command::DockerCompose::Build#build with the correct arguments' do
-          expect_any_instance_of(DDSL::Command::DockerCompose::Build).to receive(:run).with(
-            'name' => 'dev',
-            'type' => 'docker-compose',
-            'file' => 'docker-compose.yml',
-            'build_args' => {
-              'FOO' => 'bar'
-            }
-          )
+        context 'when command is successful' do
+          it 'calls DDSL::Command::DockerCompose::Build#build with the correct arguments' do
+            expect_any_instance_of(DDSL::Command::DockerCompose::Build).to receive(:run).with(
+              'name' => 'dev',
+              'type' => 'docker-compose',
+              'file' => 'docker-compose.yml',
+              'build_args' => {
+                'FOO' => 'bar'
+              }
+            )
 
-          subject.run(%W[--config #{config_file.path} build dev])
+            subject.run(%W[--config #{config_file.path} build dev])
+          end
+        end
+
+        context 'when command is raises DDSL::Shell::ExitStatusError' do
+          it 'handles the error' do
+            expect_any_instance_of(DDSL::Command::DockerCompose::Build).to receive(:run)
+              .and_raise(DDSL::Shell::ExitStatusError)
+
+            subject.run(%W[--config #{config_file.path} build dev])
+          end
         end
       end
     end
@@ -115,28 +137,50 @@ describe DDSL::CLI do
 
     context 'when valid NAME is given' do
       context 'when type of run spec is docker' do
-        it 'calls DDSL::Command::Docker::Run#run with the correct arguments' do
-          expect_any_instance_of(DDSL::Command::Docker::Run).to receive(:run).with(
-            'name' => 'test-docker',
-            'type' => 'docker',
-            'image' => 'test/test:latest',
-            'cmd' => '/echo.sh'
-          )
+        context 'when command is successful' do
+          it 'calls DDSL::Command::Docker::Run#run with the correct arguments' do
+            expect_any_instance_of(DDSL::Command::Docker::Run).to receive(:run).with(
+              'name' => 'test-docker',
+              'type' => 'docker',
+              'image' => 'test/test:latest',
+              'cmd' => '/echo.sh'
+            )
 
-          subject.run(%W[--config #{config_file.path} run test-docker])
+            subject.run(%W[--config #{config_file.path} run test-docker])
+          end
+        end
+
+        context 'when command is raises DDSL::Shell::ExitStatusError' do
+          it 'handles the error' do
+            expect_any_instance_of(DDSL::Command::Docker::Run).to receive(:run)
+              .and_raise(DDSL::Shell::ExitStatusError)
+
+            subject.run(%W[--config #{config_file.path} run test-docker])
+          end
         end
       end
 
       context 'when type of run spec is docker-compose' do
-        it 'calls DDSL::Command::DockerCompose::Run#run with the correct arguments' do
-          expect_any_instance_of(DDSL::Command::DockerCompose::Run).to receive(:run).with(
-            'name' => 'test-docker-compose',
-            'type' => 'docker-compose',
-            'service' => 'test',
-            'cmd' => '/echo.sh'
-          )
+        context 'when command is successful' do
+          it 'calls DDSL::Command::DockerCompose::Run#run with the correct arguments' do
+            expect_any_instance_of(DDSL::Command::DockerCompose::Run).to receive(:run).with(
+              'name' => 'test-docker-compose',
+              'type' => 'docker-compose',
+              'service' => 'test',
+              'cmd' => '/echo.sh'
+            )
 
-          subject.run(%W[--config #{config_file.path} run test-docker-compose])
+            subject.run(%W[--config #{config_file.path} run test-docker-compose])
+          end
+        end
+
+        context 'when command is raises DDSL::Shell::ExitStatusError' do
+          it 'handles the error' do
+            expect_any_instance_of(DDSL::Command::DockerCompose::Run).to receive(:run)
+              .and_raise(DDSL::Shell::ExitStatusError)
+
+            subject.run(%W[--config #{config_file.path} run test-docker-compose])
+          end
         end
       end
     end

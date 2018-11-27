@@ -7,6 +7,8 @@ module DDSL
     class Base
       include DSL
 
+      attr_reader :shell
+
       def initialize(shell = DDSL::Shell.new)
         @shell = shell
       end
@@ -21,6 +23,12 @@ module DDSL
         ].flatten
 
         @shell.call!(argv)
+
+        exec_after_block(spec)
+      end
+
+      def exec_after_block(spec)
+        instance_exec(spec, &after_block) unless after_block.nil?
       end
     end
   end

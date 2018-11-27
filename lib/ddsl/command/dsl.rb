@@ -38,6 +38,12 @@ module DDSL
             @command = name
           end
         end
+
+        def after(&block)
+          singleton_class.class_eval do
+            @after_block = block
+          end
+        end
       end
 
       module InstanceMethods
@@ -53,6 +59,10 @@ module DDSL
 
         def arguments
           search_ancestor_tree_variable(:@arguments) || DEFAULT_TRANSFORMER
+        end
+
+        def after_block
+          search_ancestor_tree_variable(:@after_block)
         end
 
         def executable

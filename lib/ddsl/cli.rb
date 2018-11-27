@@ -39,13 +39,13 @@ module DDSL
     end
 
     private def with_builder(builds)
-      builds.each do |b|
+      builds.map do |b|
         yield(builder_for_type(b['type']), b)
       end
     end
 
     private def with_runner(runs)
-      runs.each do |r|
+      runs.map do |r|
         yield(runner_for_type(r['type']), r)
       end
     end
@@ -66,10 +66,6 @@ module DDSL
       when 'docker-compose'
         Command::DockerCompose::Build.new
       end
-    end
-
-    private def builder
-      Command::Docker::Build.new
     end
 
     private def search_targets!(type)

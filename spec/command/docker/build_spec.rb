@@ -31,6 +31,19 @@ describe DDSL::Command::Docker::Build do
 
         subject.run(spec.merge('tags' => ['test/test:latest']))
       end
+
+      context 'when push flag is true' do
+        it 'calls the docker executable correctly to push the image' do
+          expect(shell).to receive(:call!).with(
+            %w[docker build --file Dockerfile --tag test/test:latest .]
+          )
+          expect(shell).to receive(:call!).with(
+            %w[docker push test/test:latest]
+          )
+
+          subject.run(spec.merge('push' => true, 'tags' => ['test/test:latest']))
+        end
+      end
     end
 
     context 'when build_args map are given' do

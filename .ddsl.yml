@@ -7,10 +7,10 @@ builds:
     file: docker/Dockerfile
     tags:
       - bilby91/ddsl:latest
+    push: true
   - name: dev
     type: docker-compose
     file: docker/docker-compose.yml
-
 runs:
   - name: bash
     type: docker-compose

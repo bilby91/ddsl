@@ -27,6 +27,10 @@ module DDSL
         arguments do
           accept_keys(['context'])
         end
+
+        after do |spec|
+          Push.new(shell).run('image' => spec['tags']) if spec['push'] && spec['tags'].count.positive?
+        end
       end
     end
   end
