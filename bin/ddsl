@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # frozen_string_literal: true
 
-require_relative '../lib/ddsl/cli'
+require_relative '../lib/ddsl'
 
-DDSL::CLI.run if $PROGRAM_NAME == __FILE__
+DDSL::CLI.run

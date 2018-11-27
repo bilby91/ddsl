@@ -1,0 +1,25 @@
+version: 1
+
+builds:
+  - name: main
+    context: .
+    file: docker/Dockerfile
+    tags:
+      - bilby91/ddsl:latest
+
+runs:
+  - name: bash
+    type: docker-compose
+    file: docker/docker-compose.yml
+    service: ddsl
+    cmd: /bin/bash
+
+  - name: test
+    type: docker
+    image: bilby91/ddsl:latest
+    cmd: rspec spec .
+
+  - name: lint
+    type: docker
+    image: bilby91/ddsl:latest
+    cmd: rubocop .

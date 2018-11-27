@@ -3,11 +3,8 @@ PATH
   specs:
     ddsl (0.0.1)
       clamp
-      commander
-      docker-api
-      docker-compose
-      json
       json-schema
+      transproc
 
 GEM
   remote: https://rubygems.org/
@@ -15,24 +12,13 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     ast (2.4.0)
-    backticks (1.0.2)
     clamp (1.3.0)
-    commander (4.4.7)
-      highline (~> 2.0.0)
     diff-lcs (1.3)
     docile (1.3.1)
-    docker-api (1.34.2)
-      excon (>= 0.47.0)
-      multi_json
-    docker-compose (1.1.10)
-      backticks (~> 1.0)
-    excon (0.62.0)
-    highline (2.0.0)
     jaro_winkler (1.5.1)
     json (2.1.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
-    multi_json (1.13.1)
     parallel (1.12.1)
     parser (2.5.3.0)
       ast (~> 2.4.0)
@@ -66,6 +52,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
+    transproc (1.0.2)
     unicode-display_width (1.4.0)
 
 PLATFORMS

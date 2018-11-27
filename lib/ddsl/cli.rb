@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require 'commander'
 require 'clamp'
 
 require_relative './parser'
-require_relative './docker_runner'
-require_relative './docker_compose_runner'
+require_relative './shell'
+require_relative './command'
 
 module DDSL
   class CLI < Clamp::Command
@@ -15,7 +14,13 @@ module DDSL
       parameter 'NAME ...', 'name of the build', required: true, attribute_name: :names
 
       def execute
-        docker_runner.build(search_targets!('builds'))
+        search_targets!('builds').each do |b|
+          begin
+            builder.run(b)
+          rescue DDSL::Shell::ExitStatusError
+            $stdout.puts 'Build failed.'
+          end
+        end
       end
     end
 
@@ -24,50 +29,50 @@ module DDSL
 
       def execute
         with_runner(search_targets!('runs')) do |runner, options|
-          runner.run(options)
+          begin
+            runner.run(options)
+          rescue DDSL::Shell::ExitStatusError
+            $stdout.puts 'Run failed.'
+          end
         end
       end
     end
 
-    def with_runner(runs)
+    private def with_runner(runs)
       runs.each do |r|
-        yield(runner_for_type(r['type']), [r])
+        yield(runner_for_type(r['type']), r)
       end
     end
 
-    def runner_for_type(type)
+    private def runner_for_type(type)
       case type
       when 'docker'
-        docker_runner
+        Command::Docker::Run.new
       when 'docker-compose'
-        docker_compose_runner
+        Command::DockerCompose::Run.new
       end
     end
 
-    def docker_runner
-      @docker_runner ||= DockerRunner.new
+    private def builder
+      Command::Docker::Build.new
     end
 
-    def docker_compose_runner
-      @docker_compose_runner ||= DockerComposeRunner.new
-    end
-
-    def search_targets!(type)
+    private def search_targets!(type)
       command_targets = targets(type)
       raise Clamp::UsageError.new('invalid NAME given', type) unless command_targets.count == names.count
 
       command_targets
     end
 
-    def targets(type)
+    private def targets(type)
       parsed_config[type].select { |item| names.include? item['name'] }
     end
 
-    def config_path
+    private def config_path
       @config_path ||= config || '.ddsl.yml'
     end
 
-    def parsed_config
+    private def parsed_config
       @parsed_config ||= DDSL::Parser.new.parse(config_path)
     end
   end

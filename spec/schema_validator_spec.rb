@@ -54,7 +54,7 @@ describe DDSL::SchemaValidator do
             {
               name: 'test',
               context: '.',
-              dockerfile: 'Dockerfile'
+              file: 'Dockerfile'
             }
           end
 

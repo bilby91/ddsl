@@ -1,2 +1,5 @@
 # Code Coverage
 coverage
+
+# Compiled gem
+*.gem

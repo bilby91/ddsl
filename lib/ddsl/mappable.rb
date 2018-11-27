@@ -11,16 +11,16 @@ module DDSL
     # @return [Hash] new hash with transformation specs applied
     #
     def transform_options(transformable, specs)
-      specs.inject(transformable) do |options, (key, func)|
-        if options[key].nil?
-          options
-        else
-          options.merge(key => func.call(options[key]))
+      specs.inject(transformable) do |options, (matcher, func)|
+        case matcher
+        when String
+          apply_to_key(options, matcher, func)
+        when Regexp
+          apply_to_matching_keys(options, matcher, func)
         end
       end
     end
 
-    #
     # Map the given hash keys using the given translation specs
     #
     # @param [Hash] translateable
@@ -48,7 +48,25 @@ module DDSL
     # @return [Hash] new hash with unknown keys removed
     #
     def whitelist_options(whitelistable, specs)
-      whitelistable.keep_if { |k, _v| specs.include? k }
+      whitelistable.dup.keep_if { |k, _v| specs.include? k }
+    end
+
+    private def apply_to_key(hash, key, func)
+      if hash[key].nil?
+        hash
+      else
+        hash.merge(key => func.call(hash[key]))
+      end
+    end
+
+    private def apply_to_matching_keys(hash, regex, func)
+      hash.map do |key, value|
+        if regex&.match?(key)
+          [key, func.call(value)]
+        else
+          [key, value]
+        end
+      end.to_h
     end
   end
 end

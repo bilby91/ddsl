@@ -32,3 +32,14 @@ RUN pip install docker-compose
 RUN gem install builder bundler --no-ri
 
 WORKDIR ${APP_HOME}
+
+# Copy only Gemfile for caching
+COPY lib/ddsl/version.rb $APP_HOME/lib/ddsl/version.rb
+COPY Gemfile* *.gemspec $APP_HOME/
+
+# Install ruby dependencies
+RUN bundle install
+
+# COPY app to container
+COPY . $APP_HOME
+

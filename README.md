@@ -10,38 +10,42 @@ version: 1
 builds:
   - name: main
     context: .
-    dockerfile: docker/app/Dockerfile
-    build_args:
-      APP_ENV: production
+    file: docker/Dockerfile
     tags:
-      - $IMAGE
-    push: true
+      - bilby91/ddsl:latest
 
 runs:
+  - name: bash
+    type: docker-compose
+    file: docker/docker-compose.yml
+    service: ddsl
+    cmd: /bin/bash
+
   - name: test
-    type: docker-compose
-    service: test
-    cmd: /test.sh
+    type: docker
+    image: bilby91/ddsl:latest
+    cmd: rspec spec .
+
   - name: lint
-    type: docker-compose
-    service: test
-    cmd: /lint.sh
+    type: docker
+    image: bilby91/ddsl:latest
+    cmd: rubocop .
 ```
 
 ## Dependencies
 
 - ruby
 - docker
-- docker-compose (optional)
+- docker-compose
 
 ## TODO
 
-- [] Docker Compose support
-- [] Build/Test DDSL using DDSL. Inception :)
-- [] Registries
-- [] Variable interpolation
-- [] Variable sharing/reusing
-- [] External secret proviers ? (KMS, Google?)
+- [X] Docker Compose support
+- [ ] Variable interpolation
+- [ ] Registries
+- [ ] Build/Test DDSL using DDSL. Inception :)
+- [ ] Variable sharing/reusing
+- [ ] External secret proviers ? (KMS, Google?)
 
 ## Contact
 

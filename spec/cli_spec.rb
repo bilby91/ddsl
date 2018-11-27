@@ -13,7 +13,7 @@ describe DDSL::CLI do
       builds:
         - name: main
           context: .
-          dockerfile: Dockerfile
+          file: Dockerfile
           build_args:
             FOO: bar
 
@@ -57,18 +57,14 @@ describe DDSL::CLI do
     end
 
     context 'when valid NAME is given' do
-      it 'calls DockerRunner#build with the correct arguments' do
-        expect_any_instance_of(DDSL::DockerRunner).to receive(:build).with(
-          [
-            {
-              'name' => 'main',
-              'context' => '.',
-              'dockerfile' => 'Dockerfile',
-              'build_args' => {
-                'FOO' => 'bar'
-              }
-            }
-          ]
+      it 'calls DDSL::Command::Docker::Build#build with the correct arguments' do
+        expect_any_instance_of(DDSL::Command::Docker::Build).to receive(:run).with(
+          'name' => 'main',
+          'context' => '.',
+          'file' => 'Dockerfile',
+          'build_args' => {
+            'FOO' => 'bar'
+          }
         )
 
         subject.run(%W[--config #{config_file.path} build main])
@@ -95,16 +91,12 @@ describe DDSL::CLI do
 
     context 'when valid NAME is given' do
       context 'when type of run spec is docker' do
-        it 'calls DockerRunner#run with the correct arguments' do
-          expect_any_instance_of(DDSL::DockerRunner).to receive(:run).with(
-            [
-              {
-                'name' => 'test-docker',
-                'type' => 'docker',
-                'image' => 'test/test:latest',
-                'cmd' => '/echo.sh'
-              }
-            ]
+        it 'calls DDSL::Command::Docker::Run#run with the correct arguments' do
+          expect_any_instance_of(DDSL::Command::Docker::Run).to receive(:run).with(
+            'name' => 'test-docker',
+            'type' => 'docker',
+            'image' => 'test/test:latest',
+            'cmd' => '/echo.sh'
           )
 
           subject.run(%W[--config #{config_file.path} run test-docker])
@@ -112,16 +104,12 @@ describe DDSL::CLI do
       end
 
       context 'when type of run spec is docker-compose' do
-        it 'calls DockerComposeRunner#run with the correct arguments' do
-          expect_any_instance_of(DDSL::DockerComposeRunner).to receive(:run).with(
-            [
-              {
-                'name' => 'test-docker-compose',
-                'type' => 'docker-compose',
-                'service' => 'test',
-                'cmd' => '/echo.sh'
-              }
-            ]
+        it 'calls DDSL::Command::DockerCompose::Run#run with the correct arguments' do
+          expect_any_instance_of(DDSL::Command::DockerCompose::Run).to receive(:run).with(
+            'name' => 'test-docker-compose',
+            'type' => 'docker-compose',
+            'service' => 'test',
+            'cmd' => '/echo.sh'
           )
 
           subject.run(%W[--config #{config_file.path} run test-docker-compose])

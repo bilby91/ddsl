@@ -43,10 +43,10 @@ module DDSL
       },
       build_options: {
         type: :object,
-        required: %i[context dockerfile],
+        required: %i[context file],
         properties: {
           context: { type: :string },
-          dockerfile: { type: :string },
+          file: { type: :string },
           build_args: {
             type: :object,
             additionalProperties: {
@@ -54,6 +54,14 @@ module DDSL
             }
           },
           tags: {
+            type: :array,
+            items: { type: :string }
+          },
+          labels: {
+            type: :array,
+            items: { type: :string }
+          },
+          cache_from: {
             type: :array,
             items: { type: :string }
           },
@@ -96,10 +104,14 @@ module DDSL
             enum: [:'docker-compose']
           },
           service: { type: :string },
+          file: { type: :string },
           cmd: { type: :string },
+          rm: { type: :boolean },
           user: { type: :string },
           workdir: { type: :string },
-          rm: { type: :boolean },
+          service_ports: { type: :string },
+          detach: { type: :boolean },
+          no_deps: { type: :boolean },
           env: {
             type: :object,
             additionalProperties: {
@@ -111,11 +123,7 @@ module DDSL
             additionalProperties: {
               type: :string
             }
-          },
-          service_ports: { type: :string },
-          tty: { type: :boolean },
-          detached: { type: :boolean },
-          no_deps: { type: :boolean }
+          }
         }
       }
     }
