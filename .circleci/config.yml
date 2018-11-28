@@ -1,0 +1,53 @@
+version: 2
+
+docker_options: &docker_options
+  working_directory: ~/ddsl
+  docker:
+    - image: bilby91/ddsl:latest
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
+
+jobs:
+  build:
+    <<: *docker_options
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: echo "$DOCKER_REGISTRY_PASSWORD" | docker login --username $DOCKER_REGISTRY_USERNAME --password-stdin
+      - run:
+          command: |
+            export CI_SHA1=circleci-$CIRCLE_SHA1
+            ddsl build feature-branch
+  test:
+    <<: *docker_options
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: echo "$DOCKER_REGISTRY_PASSWORD" | docker login --username $DOCKER_REGISTRY_USERNAME --password-stdin
+      - run:
+          command: |
+            export CI_SHA1=circleci-$CIRCLE_SHA1
+            ddsl run test-ci
+  lint:
+    <<: *docker_options
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: echo "$DOCKER_REGISTRY_PASSWORD" | docker login --username $DOCKER_REGISTRY_USERNAME --password-stdin
+      - run:
+          command: |
+            export CI_SHA1=circleci-$CIRCLE_SHA1
+            ddsl run lint-ci

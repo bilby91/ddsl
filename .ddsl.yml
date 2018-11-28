@@ -1,26 +1,47 @@
 version: 1
 
 builds:
-  - name: main
+  - name: feature-branch
     type: docker
     context: .
     file: docker/Dockerfile
     tags:
+      - bilby91/ddsl:$CI_SHA1
+    push: true
+    cache_from:
+      - bilby91/ddsl:latest
+  - name: master-branch
+    type: docker
+    context: .
+    file: docker/Dockerfile
+    tags:
+      - bilby91/ddsl:$CI_SHA1
       - bilby91/ddsl:latest
     push: true
+    cache_from:
+      - bilby91/ddsl:latest
   - name: dev
     type: docker-compose
     file: docker/docker-compose.yml
+
 runs:
   - name: bash
     type: docker-compose
     file: docker/docker-compose.yml
     service: ddsl
     cmd: /bin/bash
+  - name: test-ci
+    type: docker
+    image: bilby91/ddsl:$CI_SHA1
+    cmd: bundle exec rspec spec
   - name: test
     type: docker
     image: bilby91/ddsl:latest
-    cmd: rspec spec .
+    cmd: bundle exec rspec spec
+  - name: lint-ci
+    type: docker
+    image: bilby91/ddsl:$CI_SHA1
+    cmd: rubocop .
   - name: lint
     type: docker
     image: bilby91/ddsl:latest

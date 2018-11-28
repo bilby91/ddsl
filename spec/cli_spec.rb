@@ -81,11 +81,12 @@ describe DDSL::CLI do
         end
 
         context 'when command is raises DDSL::Shell::ExitStatusError' do
-          it 'handles the error' do
+          it 'handles the error and raises SystemExit' do
             expect_any_instance_of(DDSL::Command::Docker::Build).to receive(:run)
               .and_raise(DDSL::Shell::ExitStatusError)
-
-            subject.run(%W[--config #{config_file.path} build main])
+            expect do
+              subject.run(%W[--config #{config_file.path} build main])
+            end.to raise_error(SystemExit)
           end
         end
       end
@@ -107,11 +108,13 @@ describe DDSL::CLI do
         end
 
         context 'when command is raises DDSL::Shell::ExitStatusError' do
-          it 'handles the error' do
+          it 'handles the error and raises SystemExit' do
             expect_any_instance_of(DDSL::Command::DockerCompose::Build).to receive(:run)
               .and_raise(DDSL::Shell::ExitStatusError)
 
-            subject.run(%W[--config #{config_file.path} build dev])
+            expect do
+              subject.run(%W[--config #{config_file.path} build dev])
+            end.to raise_error(SystemExit)
           end
         end
       end
@@ -151,11 +154,13 @@ describe DDSL::CLI do
         end
 
         context 'when command is raises DDSL::Shell::ExitStatusError' do
-          it 'handles the error' do
+          it 'handles the error and raises SystemExit' do
             expect_any_instance_of(DDSL::Command::Docker::Run).to receive(:run)
               .and_raise(DDSL::Shell::ExitStatusError)
 
-            subject.run(%W[--config #{config_file.path} run test-docker])
+            expect do
+              subject.run(%W[--config #{config_file.path} run test-docker])
+            end.to raise_error(SystemExit)
           end
         end
       end
@@ -175,11 +180,13 @@ describe DDSL::CLI do
         end
 
         context 'when command is raises DDSL::Shell::ExitStatusError' do
-          it 'handles the error' do
+          it 'handles the error and raises SystemExit' do
             expect_any_instance_of(DDSL::Command::DockerCompose::Run).to receive(:run)
               .and_raise(DDSL::Shell::ExitStatusError)
 
-            subject.run(%W[--config #{config_file.path} run test-docker-compose])
+            expect do
+              subject.run(%W[--config #{config_file.path} run test-docker-compose])
+            end.to raise_error(SystemExit)
           end
         end
       end

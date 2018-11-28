@@ -1,10 +1,11 @@
 PATH
   remote: .
   specs:
-    ddsl (0.0.1)
-      clamp
-      json-schema
-      transproc
+    ddsl (0.0.2)
+      clamp (~> 1)
+      json (~> 2)
+      json-schema (~> 2)
+      transproc (~> 1)
 
 GEM
   remote: https://rubygems.org/
@@ -60,9 +61,9 @@ PLATFORMS
 
 DEPENDENCIES
   ddsl!
-  rspec
-  rubocop
-  simplecov
+  rspec (~> 3)
+  rubocop (~> 0.60)
+  simplecov (~> 0.16)
 
 BUNDLED WITH
    1.17.1

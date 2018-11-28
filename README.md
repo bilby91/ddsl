@@ -8,11 +8,24 @@ Docker Declarative Specific Language
 version: 1
 
 builds:
-  - name: main
+  - name: feature-branch
     type: docker
     context: .
     file: docker/Dockerfile
     tags:
+      - bilby91/ddsl:$CI_SHA1
+    push: true
+    cache_from:
+      - bilby91/ddsl:latest
+  - name: master-branch
+    type: docker
+    context: .
+    file: docker/Dockerfile
+    tags:
+      - bilby91/ddsl:$CI_SHA1
+      - bilby91/ddsl:latest
+    push: true
+    cache_from:
       - bilby91/ddsl:latest
   - name: dev
     type: docker-compose
@@ -24,17 +37,31 @@ runs:
     file: docker/docker-compose.yml
     service: ddsl
     cmd: /bin/bash
-
+  - name: test-ci
+    type: docker
+    image: bilby91/ddsl:$CI_SHA1
+    cmd: bundle exec rspec spec
   - name: test
     type: docker
     image: bilby91/ddsl:latest
-    cmd: rspec spec .
-
+    cmd: bundle exec rspec spec
+  - name: lint-ci
+    type: docker
+    image: bilby91/ddsl:$CI_SHA1
+    cmd: rubocop .
   - name: lint
     type: docker
     image: bilby91/ddsl:latest
     cmd: rubocop .
 ```
+
+## Contnious Integration
+
+| Provider  | Status                                                                                                                                   |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------|
+| GitLab CI | [![Gitlab CI](https://img.shields.io/gitlab/pipeline/bilby91/ddsl/master.svg)](https://gitlab.com/bilby91/ddsl)                          |
+| Circle CI | [![Circle CI](https://img.shields.io/circleci/project/github/bilby91/ddsl/master.svg)](https://circleci.com/gh/bilby91/ddsl/tree/master) |
+| Travis CI | [![Travis CI](https://img.shields.io/travis/bilby91/ddsl/master.svg)](https://travis-ci.com/bilby91/ddsl)                                |
 
 ## Dependencies
 
@@ -46,11 +73,13 @@ runs:
 
 - [X] Docker Compose support
 - [X] Variable interpolation
-- [ ] Registries
-- [ ] Build/Test DDSL using DDSL. Inception :)
+- [X] Add CircleCI
+- [X] Add GitLabCI
+- [X] Add TravisCI
+- [ ] Registries?
 - [ ] Variable sharing/reusing
 - [ ] External secret proviers ? (KMS, Google?)
 
 ## Contact
 
-- Martín Fernández <mfernandez@geofore.com>
+- Martín Fernández <fmartin91@gmail.com>
