@@ -45,7 +45,7 @@ runs:
 ## TODO
 
 - [X] Docker Compose support
-- [ ] Variable interpolation
+- [X] Variable interpolation
 - [ ] Registries
 - [ ] Build/Test DDSL using DDSL. Inception :)
 - [ ] Variable sharing/reusing

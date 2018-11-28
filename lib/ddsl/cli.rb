@@ -3,6 +3,7 @@
 require 'clamp'
 
 require_relative './parser'
+require_relative './variable_injector'
 require_relative './shell'
 require_relative './command'
 
@@ -84,7 +85,9 @@ module DDSL
     end
 
     private def parsed_config
-      @parsed_config ||= DDSL::Parser.new.parse(config_path)
+      @parsed_config ||= DDSL::VariableInjector.new(ENV).inject(
+        DDSL::Parser.new.parse(config_path)
+      )
     end
   end
 end
