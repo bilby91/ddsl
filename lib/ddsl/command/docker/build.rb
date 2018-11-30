@@ -29,7 +29,7 @@ module DDSL
         end
 
         after do |spec|
-          Push.new(shell).run('image' => spec['tags']) if spec['push'] && spec['tags'].count.positive?
+          spec['tags'].each { |t| Push.new(shell).run('image' => t) } if spec['push'] && spec['tags'].count.positive?
         end
       end
     end

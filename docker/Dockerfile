@@ -1,7 +1,8 @@
 FROM docker:18.05
 
-LABEL maintainer="Martín Fernández <mfernandez@geoforce.com>"
+LABEL maintainer="Martín Fernández <fmartin91@gmail.com>"
 
+# Application directory
 ENV APP_HOME /var/www/app
 
 # Install the base tooling
@@ -19,17 +20,11 @@ RUN apk add --no-cache \
       ruby-dev \
       ruby-bigdecimal 
 
-# Install untrusted packages (separate line for scoping)
-RUN apk add --no-cache \
-    --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
-    --allow-untrusted \
-    aws-cli
-
 # Install docker-compose
 RUN pip install docker-compose
 
 # Install ruby dependencies
-RUN gem install builder bundler --no-ri
+RUN gem install bundler --no-ri
 
 WORKDIR ${APP_HOME}
 
@@ -43,3 +38,9 @@ RUN bundle install
 # COPY app to container
 COPY . $APP_HOME
 
+# Build the gem locally
+RUN gem build ddsl.gemspec
+
+# Install binary
+# FIXME: We need to load the version dynamically
+RUN gem install --no-rdoc --no-ri --local ddsl-0.0.2.gem

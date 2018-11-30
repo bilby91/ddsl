@@ -1,8 +1,12 @@
 FROM docker:18.05
 
-LABEL maintainer="Martín Fernández <mfernandez@geoforce.com>"
+LABEL maintainer="Martín Fernández <fmartin91@gmail.com>"
 
+# Application directory
 ENV APP_HOME /var/www/app
+
+# Configure gems path
+ENV BUNDLE_PATH /bundle
 
 # Install the base tooling
 RUN apk add --no-cache \

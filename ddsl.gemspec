@@ -7,6 +7,8 @@ require 'ddsl/version'
 Gem::Specification.new do |spec|
   spec.name          = 'ddsl'
   spec.version       = DDSL::VERSION
+  spec.homepage      = 'https://github.com/bilby91/ddsl'
+  spec.license       = 'MIT'
   spec.authors       = ['Martin Fernandez']
   spec.email         = ['fmartin91@gmail.com']
   spec.summary       = 'Docker Declarative Specific Language'
@@ -15,10 +17,11 @@ Gem::Specification.new do |spec|
   end
   spec.executables   = ['ddsl']
   spec.require_paths = ['lib']
-  spec.add_dependency 'clamp'
-  spec.add_dependency 'json-schema'
-  spec.add_dependency 'transproc'
-  spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'simplecov'
+  spec.add_dependency 'clamp', '~> 1'
+  spec.add_dependency 'json', '~> 2'
+  spec.add_dependency 'json-schema', '~> 2'
+  spec.add_dependency 'transproc', '~> 1'
+  spec.add_development_dependency 'rspec', '~> 3'
+  spec.add_development_dependency 'rubocop', '~> 0.60'
+  spec.add_development_dependency 'simplecov', '~> 0.16'
 end

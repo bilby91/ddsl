@@ -20,6 +20,7 @@ module DDSL
             runner.run(spec)
           rescue DDSL::Shell::ExitStatusError
             $stdout.puts 'Build failed.'
+            exit(-1)
           end
         end
       end
@@ -34,6 +35,7 @@ module DDSL
             runner.run(spec)
           rescue DDSL::Shell::ExitStatusError
             $stdout.puts 'Run failed.'
+            exit(-1)
           end
         end
       end

@@ -1,0 +1,33 @@
+language: ruby
+
+services:
+  - docker
+
+env:
+  global:
+    - DDSL_VERSION=0.0.2
+    - DOCKER_COMPOSE_VERSION=1.23.1
+
+stages:
+  - build
+  - checks
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - gem install ddsl --version=$DDSL_VERSION
+  - echo "$TRAVIS_COMMIT"
+  - docker login -u "$DOCKER_REGISTRY_USERNAME" -p "$DOCKER_REGISTRY_PASSWORD"
+  - export CI_SHA1=travis-$TRAVIS_COMMIT
+
+jobs:
+  include:
+    - stage: build
+      script: ddsl build feature-branch
+    - stage: checks
+      script: |
+        ddsl run test-ci 
+    - script: |
+        ddsl run lint-ci
