@@ -14,6 +14,8 @@ module DDSL
       end
 
       def run(spec)
+        exec_before_block(spec)
+
         argv = [
           executable,
           executable_options.call(spec),
@@ -25,6 +27,10 @@ module DDSL
         @shell.call!(argv)
 
         exec_after_block(spec)
+      end
+
+      def exec_before_block(spec)
+        instance_exec(spec, &before_block) unless before_block.nil?
       end
 
       def exec_after_block(spec)
