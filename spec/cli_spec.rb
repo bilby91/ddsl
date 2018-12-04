@@ -10,6 +10,11 @@ describe DDSL::CLI do
   let(:config_file) do
     tmp_file('test.yml', <<~YML
       version: 1
+      registries:
+        - url: registry.docker.test
+          username: user
+          password: pass
+
       builds:
         - name: main
           type: docker
@@ -35,6 +40,14 @@ describe DDSL::CLI do
           cmd: /echo.sh
     YML
   )
+  end
+
+  let(:docker_credentials) do
+    {
+      'url' => 'registry.docker.test',
+      'username' => 'user',
+      'password' => 'pass'
+    }
   end
 
   context 'when invoking unknown subcommand' do
@@ -63,6 +76,10 @@ describe DDSL::CLI do
     end
 
     context 'when valid NAME is given' do
+      before do
+        expect_any_instance_of(DDSL::Command::Docker::Login).to receive(:run).with(docker_credentials)
+      end
+
       context 'when type of run spec is docker' do
         context 'when command is successful' do
           it 'calls DDSL::Command::Docker::Build#build with the correct arguments' do
@@ -139,6 +156,10 @@ describe DDSL::CLI do
     end
 
     context 'when valid NAME is given' do
+      before do
+        expect_any_instance_of(DDSL::Command::Docker::Login).to receive(:run).with(docker_credentials)
+      end
+
       context 'when type of run spec is docker' do
         context 'when command is successful' do
           it 'calls DDSL::Command::Docker::Run#run with the correct arguments' do

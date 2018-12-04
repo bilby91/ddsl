@@ -15,6 +15,14 @@ module FileHelper
     file
   end
 
+  def file(name, content = nil)
+    file = new_writable_file(name)
+    file.write content unless content.nil?
+    file.close
+
+    file
+  end
+
   def new_writable_tmp_file(name)
     new_writable_file(File.join(tmp_dir, name))
   end

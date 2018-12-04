@@ -38,6 +38,38 @@ describe DDSL::SchemaValidator do
       end
     end
 
+    context 'when a registry is given' do
+      context 'when required properties are missing' do
+        it 'raises a validation error' do
+          expect do
+            subject.validate!(
+              version: 1,
+              registries: [{}]
+            )
+          end.to raise_error(DDSL::SchemaValidator::InvalidError)
+        end
+
+        context 'when required properties are present' do
+          let(:registry) do
+            {
+              url: 'docker.test.com',
+              username: 'user',
+              password: 'pass'
+            }
+          end
+
+          it 'doesn\'t raise an error' do
+            expect do
+              subject.validate!(
+                version: 1,
+                registries: [registry]
+              )
+            end.not_to raise_error
+          end
+        end
+      end
+    end
+
     context 'when a build is given' do
       context 'when required properties are missing' do
         it 'raises a validation error' do

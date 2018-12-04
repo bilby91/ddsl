@@ -12,6 +12,11 @@ module DDSL
         type: :integer,
         enum: [1]
       },
+      registries: {
+        type: :array,
+        items: { '$ref': '#/definitions/registry' },
+        default: []
+      },
       builds: {
         type: :array,
         items: { '$ref': '#/definitions/build' }
@@ -22,6 +27,16 @@ module DDSL
       }
     },
     definitions: {
+      registry: {
+        type: :object,
+        required: %i[url username password],
+        properties: {
+          url: { type: :string },
+          username: { type: :string },
+          password: { type: :string },
+          use_cache: { type: :boolean }
+        }
+      },
       build: {
         type: :object,
         required: [:name],

@@ -8,15 +8,18 @@ module DDSL
     class InvalidError < StandardError; end
 
     #
-    # Validate given data against DDSL schema. If data is not compliant with the schema,
-    # InvalidError will be raised
+    # Validate given data against DDSL schema. Will add any defaults if nil values are found
+    #
+    # @raise [InvalidError] if data is not compliant with the schema,
     #
     # @param [Hash] data
     #
-    # @return [Hash] same data that was given
+    # @return [Hash] data with defaults if appropiate
     #
     def validate!(data)
-      errors = JSON::Validator.fully_validate(DDSL::SCHEMA, data, version: DDSL::SCHEMA_VERSION)
+      errors = JSON::Validator.fully_validate(DDSL::SCHEMA, data,
+                                              version: DDSL::SCHEMA_VERSION,
+                                              insert_defaults: true)
 
       raise InvalidError, errors.join('\n') if errors.count.positive?
 

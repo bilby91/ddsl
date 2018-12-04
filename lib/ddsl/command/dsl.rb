@@ -53,18 +53,19 @@ module DDSL
       end
 
       module InstanceMethods
-        DEFAULT_TRANSFORMER = ->(_x) { [] }
+        DEFAULT_OPTIONS_TRANSFORMER   = ->(_x) { [] }
+        DEFAULT_ARGUMENTS_TRANSFORMER = ->(_x) { {} }
 
         def executable_options
-          search_ancestor_tree_variable(:@executable_options) || DEFAULT_TRANSFORMER
+          search_ancestor_tree_variable(:@executable_options) || DEFAULT_OPTIONS_TRANSFORMER
         end
 
         def options
-          search_ancestor_tree_variable(:@options) || DEFAULT_TRANSFORMER
+          search_ancestor_tree_variable(:@options) || DEFAULT_OPTIONS_TRANSFORMER
         end
 
         def arguments
-          search_ancestor_tree_variable(:@arguments) || DEFAULT_TRANSFORMER
+          search_ancestor_tree_variable(:@arguments) || DEFAULT_ARGUMENTS_TRANSFORMER
         end
 
         def before_block
