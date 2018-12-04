@@ -70,7 +70,8 @@ module DDSL
             type: :array,
             items: { type: :string }
           },
-          push: { type: :boolean }
+          push: { type: :boolean },
+          pull: { type: :boolean }
         }
       },
       build_docker_compose_options: {

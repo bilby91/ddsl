@@ -28,6 +28,12 @@ module DDSL
           accept_keys(['context'])
         end
 
+        before do |spec|
+          if spec['pull'] && spec['cache_from'].count.positive?
+            spec['cache_from'].each { |t| Pull.new(shell).run('image' => t) }
+          end
+        end
+
         after do |spec|
           spec['tags'].each { |t| Push.new(shell).run('image' => t) } if spec['push'] && spec['tags'].count.positive?
         end

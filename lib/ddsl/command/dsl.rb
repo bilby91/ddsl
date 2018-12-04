@@ -39,6 +39,12 @@ module DDSL
           end
         end
 
+        def before(&block)
+          singleton_class.class_eval do
+            @before_block = block
+          end
+        end
+
         def after(&block)
           singleton_class.class_eval do
             @after_block = block
@@ -59,6 +65,10 @@ module DDSL
 
         def arguments
           search_ancestor_tree_variable(:@arguments) || DEFAULT_TRANSFORMER
+        end
+
+        def before_block
+          search_ancestor_tree_variable(:@before_block)
         end
 
         def after_block

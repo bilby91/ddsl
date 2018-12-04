@@ -32,7 +32,7 @@ describe DDSL::Command::Docker::Build do
         subject.run(spec.merge('tags' => ['test/test:latest']))
       end
 
-      context 'when push flag is true' do
+      context 'when push flag is true and tags are given' do
         it 'calls the docker executable correctly to push the image' do
           expect(shell).to receive(:call!).with(
             %w[docker build --file Dockerfile --tag test/test:latest .]
@@ -42,6 +42,19 @@ describe DDSL::Command::Docker::Build do
           )
 
           subject.run(spec.merge('push' => true, 'tags' => ['test/test:latest']))
+        end
+      end
+
+      context 'when pull flag is true and cache_from tags are given' do
+        it 'calls the docker executable correctly to push the image' do
+          expect(shell).to receive(:call!).with(
+            %w[docker build --file Dockerfile --cache-from test/test:latest .]
+          )
+          expect(shell).to receive(:call!).with(
+            %w[docker pull test/test:latest]
+          )
+
+          subject.run(spec.merge('pull' => true, 'cache_from' => ['test/test:latest']))
         end
       end
     end
