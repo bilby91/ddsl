@@ -76,7 +76,7 @@ runs:
 - [X] Add CircleCI
 - [X] Add GitLabCI
 - [X] Add TravisCI
-- [ ] Registries?
+- [X] Registries?
 - [ ] Variable sharing/reusing
 - [ ] External secret proviers ? (KMS, Google?)
 

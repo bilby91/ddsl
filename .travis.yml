@@ -1,4 +1,6 @@
 language: ruby
+rvm:
+  - 2.4.5
 
 services:
   - docker
@@ -17,15 +19,16 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - gem install ddsl --version=$DDSL_VERSION
-  - echo "$TRAVIS_COMMIT"
   - docker login -u "$DOCKER_REGISTRY_USERNAME" -p "$DOCKER_REGISTRY_PASSWORD"
   - export CI_SHA1=travis-$TRAVIS_COMMIT
+
+install: gem install ddsl --version=$DDSL_VERSION
 
 jobs:
   include:
     - stage: build
-      script: ddsl build feature-branch
+      script: |
+        ddsl build feature-branch
     - stage: checks
       script: |
         ddsl run test-ci 

@@ -15,9 +15,9 @@ module DDSL
       parameter 'NAME ...', 'name of the build', required: true, attribute_name: :names
 
       def execute
-        with_builder(search_targets!('builds')) do |runner, spec|
+        with_command('builds') do |command, spec|
           begin
-            runner.run(spec)
+            command.run(spec)
           rescue DDSL::Shell::ExitStatusError
             $stdout.puts 'Build failed.'
             exit(-1)
@@ -30,9 +30,9 @@ module DDSL
       parameter 'NAME ...', 'name of the run', required: true, attribute_name: :names
 
       def execute
-        with_runner(search_targets!('runs')) do |runner, spec|
+        with_command('runs') do |command, spec|
           begin
-            runner.run(spec)
+            command.run(spec)
           rescue DDSL::Shell::ExitStatusError
             $stdout.puts 'Run failed.'
             exit(-1)
@@ -41,15 +41,22 @@ module DDSL
       end
     end
 
-    private def with_builder(builds)
-      builds.map do |b|
-        yield(builder_for_type(b['type']), b)
+    private def with_command(command_type)
+      collection = search_targets!(command_type)
+
+      login_if_needed
+
+      collection.map do |x|
+        yield(command_class(command_type, x['type']), x)
       end
     end
 
-    private def with_runner(runs)
-      runs.map do |r|
-        yield(runner_for_type(r['type']), r)
+    private def command_class(command, type)
+      case command
+      when 'builds'
+        builder_for_type(type)
+      when 'runs'
+        runner_for_type(type)
       end
     end
 
@@ -71,6 +78,22 @@ module DDSL
       end
     end
 
+    private def login_if_needed
+      parsed_config['registries'].each do |r|
+        Command::Docker::Login.new.run(r) if need_login?(r)
+      end
+    end
+
+    private def need_login?(registry)
+      !registry['use_cache'] || (registry['use_cache'] && !cached_docker_auth?(registry['url']))
+    end
+
+    private def cached_docker_auth?(host)
+      parsed_docker_config['auths'].any? do |url, _|
+        URI.parse(url).host == URI.parse(host).host
+      end
+    end
+
     private def search_targets!(type)
       command_targets = targets(type)
       raise Clamp::UsageError.new('invalid NAME given', type) unless command_targets.count == names.count
@@ -82,14 +105,30 @@ module DDSL
       parsed_config[type].select { |item| names.include? item['name'] }
     end
 
-    private def config_path
-      @config_path ||= config || '.ddsl.yml'
-    end
-
     private def parsed_config
       @parsed_config ||= DDSL::VariableInjector.new(ENV).inject(
         DDSL::Parser.new.parse(config_path)
       )
+    end
+
+    private def parsed_docker_config
+      return { 'auths' => [] } unless File.exist?(docker_config_path)
+
+      @parsed_docker_config ||= JSON.parse(
+        File.read(docker_config_path)
+      )
+    end
+
+    private def config_path
+      @config_path ||= config || '.ddsl.yml'
+    end
+
+    private def docker_config_path
+      @docker_config_path ||= File.join(home_path, '.docker', 'config.json')
+    end
+
+    private def home_path
+      %w[HOME HOMEPATH].map { |e| ENV[e] }.compact.first
     end
   end
 end
