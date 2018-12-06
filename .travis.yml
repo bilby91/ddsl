@@ -7,7 +7,7 @@ services:
 
 env:
   global:
-    - DDSL_VERSION=0.0.2
+    - DDSL_VERSION=0.0.3
     - DOCKER_COMPOSE_VERSION=1.23.1
 
 stages:
@@ -19,7 +19,6 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - docker login -u "$DOCKER_REGISTRY_USERNAME" -p "$DOCKER_REGISTRY_PASSWORD"
   - export CI_SHA1=travis-$TRAVIS_COMMIT
 
 install: gem install ddsl --version=$DDSL_VERSION

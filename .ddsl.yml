@@ -1,5 +1,11 @@
 version: 1
 
+registries:
+  - url: docker.io
+    username: $DOCKER_REGISTRY_USERNAME
+    password: $DOCKER_REGISTRY_PASSWORD
+    use_cache: false
+
 builds:
   - name: feature-branch
     type: docker
