@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'json-schema'
+require 'json_schemer'
 require_relative './schema'
 
 module DDSL
@@ -17,13 +17,18 @@ module DDSL
     # @return [Hash] data with defaults if appropiate
     #
     def validate!(data)
-      errors = JSON::Validator.fully_validate(DDSL::SCHEMA, data,
-                                              version: DDSL::SCHEMA_VERSION,
-                                              insert_defaults: true)
-
-      raise InvalidError, errors.join('\n') if errors.count.positive?
+      errors = json_schema_validator.validate(data).to_a
+      raise InvalidError, 'Invalid schema' if errors&.count&.positive?
 
       data
+    end
+
+    private def json_schema_validator
+      @json_schema_validator ||= JSONSchemer.schema(
+        DDSL::SCHEMA_PATH,
+        format: true,
+        ref_resolver: DDSL::SCHEMA_RESOLVER
+      )
     end
   end
 end
