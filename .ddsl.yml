@@ -4,7 +4,7 @@ registries:
   - url: docker.io
     username: $DOCKER_REGISTRY_USERNAME
     password: $DOCKER_REGISTRY_PASSWORD
-    use_cache: false
+    use_cache: true
 
 builds:
   - name: feature-branch
@@ -40,14 +40,14 @@ runs:
     type: docker
     image: bilby91/ddsl:$CI_SHA1
     cmd: bundle exec rspec spec
-  - name: test
-    type: docker
-    image: bilby91/ddsl:latest
-    cmd: bundle exec rspec spec
   - name: lint-ci
     type: docker
     image: bilby91/ddsl:$CI_SHA1
     cmd: rubocop .
+  - name: test
+    type: docker
+    image: bilby91/ddsl:latest
+    cmd: bundle exec rspec spec
   - name: lint
     type: docker
     image: bilby91/ddsl:latest

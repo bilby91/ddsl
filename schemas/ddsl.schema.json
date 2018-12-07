@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/ddsl.schema.json",
+  "title": "DDSL",
+  "description": "Schema for the DDSL file format.",
+  "type": "object",
+  "required": [
+    "version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "enum": [
+        1
+      ],
+      "description": "Version of the DDSL schema"
+    },
+    "registries": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/registry.schema.json"
+      },
+      "default": [
+
+      ],
+      "description": "List of registries to authenticate when performing either a build or run operation"
+    },
+    "builds": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/build.schema.json"
+      },
+      "description": "List of build tasks to run"
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/run.schema.json"
+      },
+      "description": "List of run tasks to run"
+    }
+  }
+}

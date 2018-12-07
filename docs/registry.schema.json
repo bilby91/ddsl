@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/registry.schema.json",
+    "title": "Registry",
+    "description": "Information to authenticate with a docker registry",
+    "type": "object",
+    "required": [
+        "url",
+        "username",
+        "password"
+    ],
+    "properties": {
+        "url": {
+            "type": "string",
+            "description": "The docker registry server url. If using hub.docker.com as registry use `docker.io`"
+        },
+        "username": {
+            "type": "string",
+            "description": "The docker registry username"
+        },
+        "password": {
+            "type": "string",
+            "description": "The docker registry username's password"
+        },
+        "use_cache": {
+            "type": "boolean",
+            "description": "True if you want to reuse stored credentials under ~/.docker/config.json, false otherwise."
+        }
+    }
+}

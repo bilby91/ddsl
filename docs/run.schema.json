@@ -1,0 +1,142 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json",
+    "title": "Run",
+    "description": "Run task to perform using either docker or docker-compose",
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "oneOf": [
+        {
+            "$ref": "#/definitions/run_docker_options"
+        },
+        {
+            "$ref": "#/definitions/run_docker_compose_options"
+        }
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Unique name to identify the run task."
+        }
+    },
+    "definitions": {
+        "run_docker_options": {
+            "type": "object",
+            "required": [
+                "type",
+                "image"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "docker"
+                    ],
+                    "description": "Type of runner to use"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "The image that the container will use"
+                },
+                "cmd": {
+                    "type": "string",
+                    "description": "Command to run in the the container"
+                },
+                "user": {
+                    "type": "string",
+                    "description": "Username or UID (format: <name|uid>[:<group|gid>])"
+                },
+                "workdir": {
+                    "type": "string",
+                    "description": "Working directory inside the container"
+                },
+                "rm": {
+                    "type": "boolean",
+                    "description": "Automatically remove the container when it exits"
+                },
+                "env": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Set environment variables"
+                },
+                "volumes": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Bind mount volumes"
+                }
+            }
+        },
+        "run_docker_compose_options": {
+            "type": "object",
+            "required": [
+                "type",
+                "service"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "docker-compose"
+                    ],
+                    "description": "Type of runner to use"
+                },
+                "file": {
+                    "type": "string",
+                    "description": "Path to the docker-compose file"
+                },
+                "service": {
+                    "type": "string",
+                    "description": "Name of the docker-compose service to build"
+                },
+                "cmd": {
+                    "type": "string",
+                    "description": "Command to run in the the container"
+                },
+                "rm": {
+                    "type": "boolean",
+                    "description": "Remove container after run. Ignored in detached mode"
+                },
+                "user": {
+                    "type": "string",
+                    "description": "Run as specified username or uid"
+                },
+                "workdir": {
+                    "type": "string",
+                    "description": "Working directory inside the container"
+                },
+                "service_ports": {
+                    "type": "string",
+                    "description": "Run command with the service's ports enabled and mapped to the host"
+                },
+                "detach": {
+                    "type": "boolean",
+                    "description": "Detached mode: Run container in the background, print new container name"
+                },
+                "no_deps": {
+                    "type": "boolean",
+                    "description": "Don't start linked services"
+                },
+                "env": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Set environment variables"
+                },
+                "volumes": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Bind mount volumes"
+                }
+            }
+        }
+    }
+}

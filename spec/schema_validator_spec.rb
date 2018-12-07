@@ -17,7 +17,7 @@ describe DDSL::SchemaValidator do
     context 'when version is not supported' do
       it 'raises a validation error' do
         expect do
-          subject.validate!(version: -1)
+          subject.validate!('version' => -1)
         end.to raise_error(DDSL::SchemaValidator::InvalidError)
       end
     end
@@ -25,7 +25,7 @@ describe DDSL::SchemaValidator do
     context 'when version is supported' do
       it 'doesn\'t raise an error' do
         expect do
-          subject.validate!(version: 1)
+          subject.validate!('version' => 1)
         end.not_to raise_error
       end
     end
@@ -33,7 +33,7 @@ describe DDSL::SchemaValidator do
     context 'when adding random properties' do
       it 'raises a validation error' do
         expect do
-          subject.validate!(version: 1, random: 'value')
+          subject.validate!('version' => 1, 'random' => 'value')
         end.to raise_error(DDSL::SchemaValidator::InvalidError)
       end
     end
@@ -43,8 +43,8 @@ describe DDSL::SchemaValidator do
         it 'raises a validation error' do
           expect do
             subject.validate!(
-              version: 1,
-              registries: [{}]
+              'version' => 1,
+              'registries' => [{}]
             )
           end.to raise_error(DDSL::SchemaValidator::InvalidError)
         end
@@ -52,17 +52,17 @@ describe DDSL::SchemaValidator do
         context 'when required properties are present' do
           let(:registry) do
             {
-              url: 'docker.test.com',
-              username: 'user',
-              password: 'pass'
+              'url' => 'docker.test.com',
+              'username' => 'user',
+              'password' => 'pass'
             }
           end
 
           it 'doesn\'t raise an error' do
             expect do
               subject.validate!(
-                version: 1,
-                registries: [registry]
+                'version' => 1,
+                'registries' => [registry]
               )
             end.not_to raise_error
           end
@@ -75,8 +75,8 @@ describe DDSL::SchemaValidator do
         it 'raises a validation error' do
           expect do
             subject.validate!(
-              version: 1,
-              builds: [{}]
+              'version' => 1,
+              'builds' => [{}]
             )
           end.to raise_error(DDSL::SchemaValidator::InvalidError)
         end
@@ -84,18 +84,18 @@ describe DDSL::SchemaValidator do
         context 'when required properties are present' do
           let(:build) do
             {
-              name: 'test',
-              type: 'docker',
-              context: '.',
-              file: 'Dockerfile'
+              'name' => 'test',
+              'type' => 'docker',
+              'context' => '.',
+              'file' => 'Dockerfile'
             }
           end
 
           it 'doesn\'t raise an error' do
             expect do
               subject.validate!(
-                version: 1,
-                builds: [build]
+                'version' => 1,
+                'builds' => [build]
               )
             end.not_to raise_error
           end
@@ -108,8 +108,8 @@ describe DDSL::SchemaValidator do
         it 'raises a validation error' do
           expect do
             subject.validate!(
-              version: 1,
-              runs: [{}]
+              'version' => 1,
+              'runs' => [{}]
             )
           end.to raise_error(DDSL::SchemaValidator::InvalidError)
         end
@@ -119,8 +119,8 @@ describe DDSL::SchemaValidator do
             it 'raises a validation error' do
               expect do
                 subject.validate!(
-                  version: 1,
-                  runs: [{}]
+                  'version' => 1,
+                  'runs' => [{}]
                 )
               end.to raise_error(DDSL::SchemaValidator::InvalidError)
             end
@@ -130,16 +130,17 @@ describe DDSL::SchemaValidator do
             context 'when type is docker' do
               let(:run) do
                 {
-                  type: 'docker',
-                  image: 'docker/docker'
+                  'name' => 'test',
+                  'type' => 'docker',
+                  'image' => 'docker/docker'
                 }
               end
 
               it 'doesn\'t raise an error' do
                 expect do
                   subject.validate!(
-                    version: 1,
-                    runs: [run]
+                    'version' => 1,
+                    'runs' => [run]
                   )
                 end.not_to raise_error
               end
@@ -148,15 +149,16 @@ describe DDSL::SchemaValidator do
             context 'when type is docker-compose' do
               let(:run) do
                 {
-                  type: 'docker-compose',
-                  service: 'test_service'
+                  'name' => 'test',
+                  'type' => 'docker-compose',
+                  'service' => 'test_service'
                 }
               end
               it 'doesn\'t raise an error' do
                 expect do
                   subject.validate!(
-                    version: 1,
-                    runs: [run]
+                    'version' => 1,
+                    'runs' => [run]
                   )
                 end.not_to raise_error
               end

@@ -1,0 +1,141 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/build.schema.json",
+    "title": "Build",
+    "description": "Build task to perform using either docker or docker-compose",
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "oneOf": [
+        {
+            "$ref": "#/definitions/build_docker_options"
+        },
+        {
+            "$ref": "#/definitions/build_docker_compose_options"
+        }
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Unique name to identify the build task."
+        }
+    },
+    "definitions": {
+        "build_docker_options": {
+            "type": "object",
+            "required": [
+                "type",
+                "context",
+                "file"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "docker"
+                    ],
+                    "description": "Type of builder to use"
+                },
+                "context": {
+                    "type": "string",
+                    "description": "Path for the `docker build` context"
+                },
+                "file": {
+                    "type": "string",
+                    "description": "Path to the Dockerfile to build"
+                },
+                "build_args": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Set build-time variables"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Name and optionally a tag in the ‘name:tag’ format"
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Set metadata for an image"
+                },
+                "cache_from": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Images to consider as cache sources"
+                },
+                "push": {
+                    "type": "boolean",
+                    "description": "If true, push any configured tag to the appropiate registry"
+                },
+                "pull": {
+                    "type": "boolean",
+                    "description": "If true, all images specified in `cache_from` will be pulled before building"
+                }
+            }
+        },
+        "build_docker_compose_options": {
+            "type": "object",
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "docker-compose"
+                    ],
+                    "description": "Type of builder to use"
+                },
+                "file": {
+                    "type": "string",
+                    "description": "Path to the docker-compose file"
+                },
+                "service": {
+                    "type": "string",
+                    "description": "Name of the docker-compose service to build"
+                },
+                "no_cache": {
+                    "type": "boolean",
+                    "description": "Do not use cache when building the image"
+                },
+                "pull": {
+                    "type": "boolean",
+                    "description": "Always attempt to pull a newer version of the image"
+                },
+                "force_rm": {
+                    "type": "boolean",
+                    "description": "Always remove intermediate containers"
+                },
+                "compress": {
+                    "type": "boolean",
+                    "description": "Compress the build context using gzip"
+                },
+                "parallel": {
+                    "type": "boolean",
+                    "description": "Build images in parallel"
+                },
+                "memory": {
+                    "type": "string",
+                    "description": "Sets memory limit for the build container."
+                },
+                "build_args": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Set build-time variables for services"
+                }
+            }
+        }
+    }
+}

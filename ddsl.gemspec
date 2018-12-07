@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.add_dependency 'clamp', '~> 1'
   spec.add_dependency 'json', '~> 2'
-  spec.add_dependency 'json-schema', '~> 2'
+  spec.add_dependency 'json_schemer', '~> 0.1'
   spec.add_dependency 'transproc', '~> 1'
   spec.add_development_dependency 'rspec', '~> 3'
   spec.add_development_dependency 'rubocop', '~> 0.60'
