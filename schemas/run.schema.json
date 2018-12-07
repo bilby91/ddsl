@@ -64,8 +64,8 @@
           "description": "Set environment variables"
         },
         "volumes": {
-          "type": "object",
-          "additionalProperties": {
+          "type": "array",
+          "items": {
             "type": "string"
           },
           "description": "Bind mount volumes"
@@ -130,8 +130,8 @@
           "description": "Set environment variables"
         },
         "volumes": {
-          "type": "object",
-          "additionalProperties": {
+          "type": "array",
+          "items": {
             "type": "string"
           },
           "description": "Bind mount volumes"

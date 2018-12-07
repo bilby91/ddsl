@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ddsl (0.0.3)
+    ddsl (0.0.4)
       clamp (~> 1)
       json (~> 2)
       json_schemer (~> 0.1)
