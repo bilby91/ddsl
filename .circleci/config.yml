@@ -24,8 +24,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: echo "$DOCKER_REGISTRY_PASSWORD" | docker login --username $DOCKER_REGISTRY_USERNAME --password-stdin
-      - run:
           command: |
             export CI_SHA1=circleci-$CIRCLE_SHA1
             ddsl build feature-branch
@@ -35,8 +33,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: echo "$DOCKER_REGISTRY_PASSWORD" | docker login --username $DOCKER_REGISTRY_USERNAME --password-stdin
-      - run:
           command: |
             export CI_SHA1=circleci-$CIRCLE_SHA1
             ddsl run test-ci
@@ -45,8 +41,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          command: echo "$DOCKER_REGISTRY_PASSWORD" | docker login --username $DOCKER_REGISTRY_USERNAME --password-stdin
       - run:
           command: |
             export CI_SHA1=circleci-$CIRCLE_SHA1

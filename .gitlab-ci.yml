@@ -10,7 +10,6 @@ stages:
   - build
   - checks
 before_script:
-  - echo $DOCKER_REGISTRY_PASSWORD | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
   - export CI_SHA1=gitlab-$CI_COMMIT_SHA
 build:
   stage: build
