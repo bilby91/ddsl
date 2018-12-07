@@ -16,6 +16,7 @@ builds:
     push: true
     cache_from:
       - bilby91/ddsl:latest
+
   - name: master-branch
     type: docker
     context: .
@@ -26,9 +27,26 @@ builds:
     push: true
     cache_from:
       - bilby91/ddsl:latest
+
   - name: dev
     type: docker-compose
     file: docker/docker-compose.yml
+
+  - name: docs-builder
+    type: docker
+    file: docker/jsonschema2md/Dockerfile
+    context: docker/jsonschema2md
+    push: true
+    tags:
+      - bilby91/jsonschema2md:latest
+
+  - name: changelog-builder
+    type: docker
+    file: docker/github_changelog_generator/Dockerfile
+    context: docker/github_changelog_generator
+    push: true
+    tags:
+      - bilby91/github_changelog_generator:latest
 
 runs:
   - name: bash
@@ -36,19 +54,42 @@ runs:
     file: docker/docker-compose.yml
     service: ddsl
     cmd: /bin/bash
+
   - name: test-ci
     type: docker
     image: bilby91/ddsl:$CI_SHA1
     cmd: bundle exec rspec spec
+
   - name: lint-ci
     type: docker
     image: bilby91/ddsl:$CI_SHA1
     cmd: rubocop .
+
   - name: test
     type: docker
     image: bilby91/ddsl:latest
     cmd: bundle exec rspec spec
+
   - name: lint
     type: docker
     image: bilby91/ddsl:latest
     cmd: rubocop .
+
+  - name: build-docs
+    type: docker
+    image: bilby91/jsonschema2md
+    rm: true
+    cmd: jsonschema2md --input /schemas --out /docs --draft 06 -n
+    volumes:
+      - $PWD/schemas:/schemas
+      - $PWD/docs:/docs
+
+  - name: build-changelog
+    type: docker
+    image: bilby91/github_changelog_generator:latest
+    rm: true
+    cmd: github_changelog_generator -u bilby91 -p ddsl
+    envs:
+      CHANGELOG_GITHUB_TOKEN: $CHANGELOG_GITHUB_TOKEN
+    volumes:
+      - $PWD:/app

@@ -19,7 +19,7 @@
     "registries": {
       "type": "array",
       "items": {
-        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/registry.schema.json"
+        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/registry.schema.json"
       },
       "default": [
 
@@ -29,14 +29,14 @@
     "builds": {
       "type": "array",
       "items": {
-        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/build.schema.json"
+        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/build.schema.json"
       },
       "description": "List of build tasks to run"
     },
     "runs": {
       "type": "array",
       "items": {
-        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/run.schema.json"
+        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json"
       },
       "description": "List of run tasks to run"
     }

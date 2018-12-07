@@ -54,7 +54,7 @@ Unique name to identify the run task.
 | [service_ports](#service_ports) | `string` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 | [type](#type) | `enum` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 | [user](#user) | `string` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
-| [volumes](#volumes) | `object` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
+| [volumes](#volumes) | `string[]` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 | [workdir](#workdir) | `string` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 
 ## cmd
@@ -291,17 +291,20 @@ Bind mount volumes
 `volumes`
 
 * is optional
-* type: `object`
+* type: `string[]`
 * defined in this schema
 
 ### volumes Type
 
 
-`object` with following properties:
+Array type: `string[]`
+
+All items must be of the type:
+`string`
 
 
-| Property | Type | Required |
-|----------|------|----------|
+
+
 
 
 

@@ -15,9 +15,9 @@ Schema for the DDSL file format.
 
 | Property | Type | Required | Default | Defined by |
 |----------|------|----------|---------|------------|
-| [builds](#builds) | reference | Optional |  | DDSL (this schema) |
-| [registries](#registries) | reference | Optional | `[]` | DDSL (this schema) |
-| [runs](#runs) | reference | Optional |  | DDSL (this schema) |
+| [builds](#builds) | Build | Optional |  | DDSL (this schema) |
+| [registries](#registries) | Registry | Optional | `[]` | DDSL (this schema) |
+| [runs](#runs) | Run | Optional |  | DDSL (this schema) |
 | [version](#version) | `enum` | **Required** |  | DDSL (this schema) |
 
 ## builds
@@ -27,16 +27,16 @@ List of build tasks to run
 `builds`
 
 * is optional
-* type: reference
+* type: Build
 * defined in this schema
 
 ### builds Type
 
 
-Array type: reference
+Array type: Build
 
 All items must be of the type:
-* []() – `https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/build.schema.json`
+* [Build](build.schema.md) – `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/build.schema.json`
 
 
 
@@ -52,7 +52,7 @@ List of registries to authenticate when performing either a build or run operati
 `registries`
 
 * is optional
-* type: reference
+* type: Registry
 
 * default: `[]`
 * defined in this schema
@@ -60,10 +60,10 @@ List of registries to authenticate when performing either a build or run operati
 ### registries Type
 
 
-Array type: reference
+Array type: Registry
 
 All items must be of the type:
-* []() – `https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/registry.schema.json`
+* [Registry](registry.schema.md) – `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/registry.schema.json`
 
 
 
@@ -79,16 +79,16 @@ List of run tasks to run
 `runs`
 
 * is optional
-* type: reference
+* type: Run
 * defined in this schema
 
 ### runs Type
 
 
-Array type: reference
+Array type: Run
 
 All items must be of the type:
-* []() – `https://raw.githubusercontent.com/bilby91/ddsl/testing/docs/run.schema.json`
+* [Run](run.schema.md) – `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json`
 
 
 
