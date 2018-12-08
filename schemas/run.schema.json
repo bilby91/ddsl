@@ -111,7 +111,7 @@
           "description": "Working directory inside the container"
         },
         "service_ports": {
-          "type": "string",
+          "type": "boolean",
           "description": "Run command with the service's ports enabled and mapped to the host"
         },
         "detach": {
