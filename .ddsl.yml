@@ -93,3 +93,8 @@ runs:
       CHANGELOG_GITHUB_TOKEN: $CHANGELOG_GITHUB_TOKEN
     volumes:
       - $PWD:/app
+
+  - name: publish
+    type: docker
+    image: bilby91/ddsl:$CI_SHA1
+    cmd: scripts/publish.sh

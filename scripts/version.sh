@@ -1,0 +1,1 @@
+cat lib/ddsl/version.rb  | grep VERSION | awk '{ print $NF }' | sed -e "s/^'//" -e "s/'$//"

@@ -9,6 +9,7 @@ services:
 stages:
   - build
   - checks
+  - publish
 before_script:
   - export CI_SHA1=gitlab-$CI_COMMIT_SHA
 build:
@@ -31,3 +32,9 @@ lint:
   stage: checks
   script:
     - ddsl run lint-ci
+publish:
+  stage: publish
+  script:
+    - ddsl run publish
+  only:
+    - /v[0-9]+(\.[0-9]+)*/
