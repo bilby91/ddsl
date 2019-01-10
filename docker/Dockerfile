@@ -42,5 +42,4 @@ COPY . $APP_HOME
 RUN gem build ddsl.gemspec
 
 # Install binary
-# FIXME: We need to load the version dynamically
-RUN gem install --no-rdoc --no-ri --local ddsl-0.0.4.gem
+RUN gem install --no-rdoc --no-ri --local ddsl-$(scripts/version.sh).gem
