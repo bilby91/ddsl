@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.0.5](https://github.com/bilby91/ddsl/tree/v0.0.5) (2019-01-11)
+[Full Changelog](https://github.com/bilby91/ddsl/compare/v0.0.4...v0.0.5)
+
+**Merged pull requests:**
+
+- Fix permissions for gem credentials file [\#14](https://github.com/bilby91/ddsl/pull/14) ([bilby91](https://github.com/bilby91))
+- Bump version [\#13](https://github.com/bilby91/ddsl/pull/13) ([bilby91](https://github.com/bilby91))
+- Add automatic publish via ddsl and GitLab [\#12](https://github.com/bilby91/ddsl/pull/12) ([bilby91](https://github.com/bilby91))
+- Fix service\_port for docker-compose run [\#11](https://github.com/bilby91/ddsl/pull/11) ([bilby91](https://github.com/bilby91))
+- Update README.md [\#10](https://github.com/bilby91/ddsl/pull/10) ([bilby91](https://github.com/bilby91))
+- Add docs builder with ddsl [\#8](https://github.com/bilby91/ddsl/pull/8) ([bilby91](https://github.com/bilby91))
+
 ## [v0.0.4](https://github.com/bilby91/ddsl/tree/v0.0.4) (2018-12-08)
 [Full Changelog](https://github.com/bilby91/ddsl/compare/v0.0.3...v0.0.4)
 
