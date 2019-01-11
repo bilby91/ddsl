@@ -98,3 +98,5 @@ runs:
     type: docker
     image: bilby91/ddsl:$CI_SHA1
     cmd: scripts/publish.sh
+    envs:
+      RUBYGEMS_TOKEN: $RUBYGEMS_TOKEN
