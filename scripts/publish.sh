@@ -6,7 +6,7 @@ if [ ! -f $COMPILED_GEM_PATH ]; then
 fi
 
 # Copy RUBYGEMS_TOKEN to the credentials file
-echo "---\n:rubygems_api_key: $RUBYGEMS_TOKEN" > ~/.gem/credentials
+echo -e "---\n:rubygems_api_key: $RUBYGEMS_TOKEN" > ~/.gem/credentials
 
 # Fix permissions
 chmod 0600 ~/.gem/credentials
