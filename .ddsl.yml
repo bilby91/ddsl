@@ -6,26 +6,27 @@ registries:
     password: $DOCKER_REGISTRY_PASSWORD
     use_cache: true
 
-builds:
-  - name: feature-branch
-    type: docker
-    context: .
+templates:
+  - name: base-build
     file: docker/Dockerfile
+    context: .
+    push: true
     tags:
       - bilby91/ddsl:$CI_SHA1
-    push: true
     cache_from:
       - bilby91/ddsl:latest
 
+builds:
+  - name: feature-branch
+    type: docker
+    templates:
+      - base-build
+
   - name: master-branch
     type: docker
-    context: .
-    file: docker/Dockerfile
+    templates:
+      - base-build
     tags:
-      - bilby91/ddsl:$CI_SHA1
-      - bilby91/ddsl:latest
-    push: true
-    cache_from:
       - bilby91/ddsl:latest
 
   - name: dev

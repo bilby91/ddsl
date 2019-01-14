@@ -7,7 +7,7 @@ services:
 
 env:
   global:
-    - DDSL_VERSION=0.0.4
+    - DDSL_VERSION=0.0.6
     - DOCKER_COMPOSE_VERSION=1.23.1
 
 stages:

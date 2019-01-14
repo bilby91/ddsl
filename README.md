@@ -73,7 +73,7 @@ in a bash script in order to get them injected.
 
 Lets take a look at a section of the previous example:
 
-```
+```yaml
 builds:
   - name: feature-branch
     type: docker
@@ -94,7 +94,7 @@ Templates let you [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) y
 
 Lets take a look at a possible scenario where using templates would make sense.
 
-```
+```yaml
 version: 1
 
 templates:
