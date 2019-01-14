@@ -18,6 +18,7 @@ Schema for the DDSL file format.
 | [builds](#builds) | Build | Optional |  | DDSL (this schema) |
 | [registries](#registries) | Registry | Optional | `[]` | DDSL (this schema) |
 | [runs](#runs) | Run | Optional |  | DDSL (this schema) |
+| [templates](#templates) | Template | Optional |  | DDSL (this schema) |
 | [version](#version) | `enum` | **Required** |  | DDSL (this schema) |
 
 ## builds
@@ -89,6 +90,31 @@ Array type: Run
 
 All items must be of the type:
 * [Run](run.schema.md) – `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json`
+
+
+
+
+
+
+
+
+## templates
+
+List of templates to use in builds or runs
+
+`templates`
+
+* is optional
+* type: Template
+* defined in this schema
+
+### templates Type
+
+
+Array type: Template
+
+All items must be of the type:
+* [Template](template.schema.md) – `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/template.schema.json`
 
 
 

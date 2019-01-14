@@ -28,7 +28,22 @@
         "type",
         "image"
       ],
+      "anyOf": [
+        {
+          "required" : ["templates"]
+        },
+        {
+          "required" : ["image"]
+        }
+      ],
       "properties": {
+        "templates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of templates the run will inherit"
+        },
         "type": {
           "type": "string",
           "enum": [
@@ -78,7 +93,22 @@
         "type",
         "service"
       ],
+      "anyOf": [
+        {
+          "required" : ["templates"]
+        },
+        {
+          "required" : ["service"]
+        }
+      ],
       "properties": {
+        "templates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of templates the run will inherit"
+        },
         "type": {
           "type": "string",
           "enum": [

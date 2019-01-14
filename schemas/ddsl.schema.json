@@ -39,6 +39,13 @@
         "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json"
       },
       "description": "List of run tasks to run"
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/template.schema.json"
+      },
+      "description": "List of templates to use in builds or runs"
     }
   }
 }

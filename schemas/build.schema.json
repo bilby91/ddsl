@@ -25,11 +25,24 @@
     "build_docker_options": {
       "type": "object",
       "required": [
-        "type",
-        "context",
-        "file"
+        "type"
+      ],
+      "anyOf": [
+        {
+          "required" : ["templates"]
+        },
+        {
+          "required" : ["file", "context"]
+        }
       ],
       "properties": {
+        "templates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of templates the build will inherit"
+        },
         "type": {
           "type": "string",
           "enum": [
@@ -89,6 +102,13 @@
         "type"
       ],
       "properties": {
+        "templates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of templates the build will inherit"
+        },
         "type": {
           "type": "string",
           "enum": [

@@ -28,7 +28,26 @@
                 "type",
                 "image"
             ],
+            "anyOf": [
+                {
+                    "required": [
+                        "templates"
+                    ]
+                },
+                {
+                    "required": [
+                        "image"
+                    ]
+                }
+            ],
             "properties": {
+                "templates": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of templates the run will inherit"
+                },
                 "type": {
                     "type": "string",
                     "enum": [
@@ -78,7 +97,26 @@
                 "type",
                 "service"
             ],
+            "anyOf": [
+                {
+                    "required": [
+                        "templates"
+                    ]
+                },
+                {
+                    "required": [
+                        "service"
+                    ]
+                }
+            ],
             "properties": {
+                "templates": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of templates the run will inherit"
+                },
                 "type": {
                     "type": "string",
                     "enum": [
@@ -111,7 +149,7 @@
                     "description": "Working directory inside the container"
                 },
                 "service_ports": {
-                    "type": "string",
+                    "type": "boolean",
                     "description": "Run command with the service's ports enabled and mapped to the host"
                 },
                 "detach": {
