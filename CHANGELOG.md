@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.0.6](https://github.com/bilby91/ddsl/tree/v0.0.6) (2019-01-14)
+[Full Changelog](https://github.com/bilby91/ddsl/compare/v0.0.5...v0.0.6)
+
+**Merged pull requests:**
+
+- Bump version to 0.0.6 [\#17](https://github.com/bilby91/ddsl/pull/17) ([bilby91](https://github.com/bilby91))
+- Add templates [\#15](https://github.com/bilby91/ddsl/pull/15) ([bilby91](https://github.com/bilby91))
+
 ## [v0.0.5](https://github.com/bilby91/ddsl/tree/v0.0.5) (2019-01-11)
 [Full Changelog](https://github.com/bilby91/ddsl/compare/v0.0.4...v0.0.5)
 
