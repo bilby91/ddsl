@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "https://raw.githubusercontent.com/bilby91/ddsl/master/docs/template.schema.json",
+    "title": "Template",
+    "description": "Template for encapsulating common option either docker or docker-compose",
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Unique name to identify the template."
+        }
+    },
+    "additionalProperties": true
+}

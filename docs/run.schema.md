@@ -51,7 +51,8 @@ Unique name to identify the run task.
 | [no_deps](#no_deps) | `boolean` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 | [rm](#rm) | `boolean` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 | [service](#service) | `string` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
-| [service_ports](#service_ports) | `string` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
+| [service_ports](#service_ports) | `boolean` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
+| [templates](#templates) | `string[]` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 | [type](#type) | `enum` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 | [user](#user) | `string` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
 | [volumes](#volumes) | `string[]` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/run.schema.json#/definitions/run_docker_compose_options` |
@@ -229,13 +230,38 @@ Run command with the service's ports enabled and mapped to the host
 `service_ports`
 
 * is optional
-* type: `string`
+* type: `boolean`
 * defined in this schema
 
 ### service_ports Type
 
 
+`boolean`
+
+
+
+
+
+## templates
+
+List of templates the run will inherit
+
+`templates`
+
+* is optional
+* type: `string[]`
+* defined in this schema
+
+### templates Type
+
+
+Array type: `string[]`
+
+All items must be of the type:
 `string`
+
+
+
 
 
 

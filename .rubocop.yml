@@ -11,6 +11,9 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
 
+Metrics/CyclomaticComplexity:
+  Max: 10
+
 Style/Documentation:
   Enabled: false
 

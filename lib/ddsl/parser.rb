@@ -2,7 +2,7 @@
 
 require 'json'
 require 'yaml'
-require_relative './schema_validator'
+require_relative './schema_parser'
 
 module DDSL
   class Parser
@@ -26,7 +26,7 @@ module DDSL
                         raise UnsupportedFileFormatError, "format #{format} is unsupported"
                       end
 
-      DDSL::SchemaValidator.new.validate!(parsed_config)
+      DDSL::SchemaParser.new.parse!(parsed_config)
     end
   end
 end

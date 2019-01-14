@@ -57,6 +57,7 @@ Unique name to identify the build task.
 | [push](#push) | `boolean` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/build.schema.json#/definitions/build_docker_options` |
 | [service](#service) | `string` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/build.schema.json#/definitions/build_docker_compose_options` |
 | [tags](#tags) | `string[]` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/build.schema.json#/definitions/build_docker_options` |
+| [templates](#templates) | `string[]` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/build.schema.json#/definitions/build_docker_compose_options` |
 | [type](#type) | `enum` | `https://raw.githubusercontent.com/bilby91/ddsl/master/docs/build.schema.json#/definitions/build_docker_compose_options` |
 
 ## build_args
@@ -346,6 +347,33 @@ Name and optionally a tag in the ‘name:tag’ format
 * defined in this schema
 
 ### tags Type
+
+
+Array type: `string[]`
+
+All items must be of the type:
+`string`
+
+
+
+
+
+
+
+
+
+
+## templates
+
+List of templates the build will inherit
+
+`templates`
+
+* is optional
+* type: `string[]`
+* defined in this schema
+
+### templates Type
 
 
 Array type: `string[]`
