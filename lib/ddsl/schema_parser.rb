@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json_schemer'
+# require 'pp'
 require_relative './schema'
 require_relative './template_merger'
 
@@ -8,10 +9,12 @@ module DDSL
   class SchemaParser
     class InvalidError < StandardError; end
 
-    SCHEMA_MAP = {
-      'builds' => SchemaBuild,
-      'runs' => SchemaRun
-    }.freeze
+    APPLICATIVES = [DDSL::TemplateMerger].freeze
+    
+    # SCHEMA_MAP = {
+    #   'builds' => SchemaBuild,
+    #   'runs' => SchemaRun
+    # }.freeze
 
     #
     # Parse given potentially compatible data schema. Parser will merge template values if used.
@@ -23,28 +26,58 @@ module DDSL
     # @return [Hash] data
     #
     def parse!(data)
-      errors = SchemaDDSL.new(data).validate
+      transformed_data = APPLICATIVES.inject(data) do |schema_instance, applicative|
+        validate_data!(schema_instance)
+        
+        applicative.new(schema_instance).apply
+      end
 
-      # Validate initial schema without potential templates applied
-      raise InvalidError, 'Invalid schema' if errors&.count&.positive?
+      # We need to validate one more time since the last applicative applied is not validated
+      validate_data!(transformed_data)
 
-      # Apply potentially defined templates to the data
-      applied_data = DDSL::TemplateMerger.new(data).apply
-
-      # Re evaluate schema in case template corrupted the data
-      %w[builds runs].each { |x| validate_schema_key!(applied_data, x) }
-
-      applied_data
+      transformed_data
     end
 
-    private def validate_schema_key!(data, key)
-      return unless data.key?(key)
+    private def validate_data!(data)
+      errors = SchemaDDSL.new(data).validate
 
-      data[key].each do |build|
-        errors = SCHEMA_MAP[key].new(build).validate
+      p "first"
+      if errors.count > 0
+        # errors = SchemaBuild.new(data['builds'][0]).validate
 
-        raise InvalidError, 'Invalid schema' if errors&.count&.positive?
+        errors.each do |e|
+          next if e['data_pointer'] =~ /\/builds\/\d\/type/
+
+          # p data
+          # p e['data_pointer'].split('/').delete_if(&:empty?)
+          foo = e['data_pointer'].split('/').delete_if(&:empty?).inject(data) do |x, path|
+            # p "fooo"
+            p x
+            case x
+            when Array
+              x[path.to_i]
+            else
+              x[path]
+            end
+            # x
+            # x[path]
+          end
+
+          p foo
+          "/builds/3/tags/0"
+          "boolean"
+          "maximium"
+          
+          # puts "Data: #{e['data']}"
+          # puts "Data Pointer: #{e['data_pointer']}"
+          # puts "Type: #{e['type']}"
+          # puts "Schema: #{e['schema']}"
+          # puts "Root Schema: #{e}"
+          # puts
+        end
       end
+      
+      raise InvalidError, 'Invalid schema' if errors&.count&.positive?
     end
   end
 end

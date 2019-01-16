@@ -10,7 +10,7 @@ templates:
   - name: base-build
     file: docker/Dockerfile
     context: .
-    push: true
+    push: "true"
     tags:
       - bilby91/ddsl:$CI_SHA1
     cache_from:

@@ -3,6 +3,9 @@
 require 'clamp'
 
 require_relative './parser'
+
+DDSL::Parser.new.parse(".ddsl.yml")
+
 require_relative './variable_injector'
 require_relative './shell'
 require_relative './command'
@@ -109,6 +112,10 @@ module DDSL
       @parsed_config ||= DDSL::VariableInjector.new(ENV).inject(
         DDSL::Parser.new.parse(config_path)
       )
+    rescue DDSL::SchemaParser::InvalidError => e
+      $stdout.puts e.message
+
+      exit(-1) 
     end
 
     private def parsed_docker_config

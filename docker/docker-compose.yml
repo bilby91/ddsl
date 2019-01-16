@@ -18,5 +18,6 @@ services:
       - ../:/var/www/app:cached
       - ddsl_bundle:/bundle:cached
       - ~/.bash_history:/root/.bash_history
+      - /Users/bilby91/Projects/github.com/json_schemer:/var/www/json_schemer
     depends_on:
       - dind

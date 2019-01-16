@@ -1,11 +1,20 @@
 PATH
   remote: .
   specs:
-    ddsl (0.0.5)
+    ddsl (0.0.6)
       clamp (~> 1)
       json (~> 2)
       json_schemer (~> 0.1)
       transproc (~> 1)
+
+PATH
+  remote: /var/www/json_schemer
+  specs:
+    json_schemer (0.1.10)
+      ecma-re-validator (~> 0.2.0)
+      hana (~> 1.3.3)
+      regexp_parser (~> 1.2.0)
+      uri_template (~> 0.7.0)
 
 GEM
   remote: https://rubygems.org/
@@ -19,11 +28,6 @@ GEM
     hana (1.3.4)
     jaro_winkler (1.5.1)
     json (2.1.0)
-    json_schemer (0.1.9)
-      ecma-re-validator (~> 0.2.0)
-      hana (~> 1.3.3)
-      regexp_parser (~> 1.2.0)
-      uri_template (~> 0.7.0)
     parallel (1.12.1)
     parser (2.5.3.0)
       ast (~> 2.4.0)
@@ -66,6 +70,7 @@ PLATFORMS
 
 DEPENDENCIES
   ddsl!
+  json_schemer!
   rspec (~> 3)
   rubocop (~> 0.60)
   simplecov (~> 0.16)
